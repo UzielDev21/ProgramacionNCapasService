@@ -1,0 +1,3 @@
+usuarioprueba1|estefanía|Olea|Sanchez|testeo1@gmail.com|Password120@|21/05/2002|H|1234568097|1235208521|CAJU020521HMCSSZA4|1
+usuarioprueba2|moíses|Castañeda|De jesus|testeo2@gmail.com|Prueba136@|19/06/1993|H|1234568097|1235208521|CAJU020521HMCSSZA4|2
+usuarioprueba3|zeus|Olea|Sanchez|testeo3@gmail.com|Password139|16/07/1988|H|1234568097|1235208521|CAJU020521HMCSSZA4|3
