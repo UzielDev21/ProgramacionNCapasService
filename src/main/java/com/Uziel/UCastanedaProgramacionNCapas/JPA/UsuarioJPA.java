@@ -1,5 +1,6 @@
 package com.Uziel.UCastanedaProgramacionNCapas.JPA;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -66,6 +67,7 @@ public class UsuarioJPA {
     public RolJPA RolJPA;
     
     @OneToMany(mappedBy = "UsuarioJPA", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     public List<DireccionJPA> DireccionesJPA = new ArrayList<>();
     
 //------------------------------------------------------------------SETTERS Y GETTERS------------------------------------------------------------------//
@@ -192,22 +194,4 @@ public class UsuarioJPA {
     public String getImagen(){
         return Imagen;
     }
-    
-    public void SetRolJPA(RolJPA RolJPA){
-        this.RolJPA = RolJPA;
-    }
-    
-    public RolJPA getRolJPA(){
-        return RolJPA;
-    }
-
-    public void setDireccionesJPA(List<DireccionJPA> DireccionesJPA) {
-        this.DireccionesJPA = DireccionesJPA;
-    }
-    
-    public List<DireccionJPA> getDireccionesJPA() {
-        return DireccionesJPA;
-    }
-
-
 }

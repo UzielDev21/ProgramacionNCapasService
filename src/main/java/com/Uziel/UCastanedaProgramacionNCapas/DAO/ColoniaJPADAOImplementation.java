@@ -1,8 +1,7 @@
 package com.Uziel.UCastanedaProgramacionNCapas.DAO;
 
 import com.Uziel.UCastanedaProgramacionNCapas.JPA.ColoniaJPA;
-import com.Uziel.UCastanedaProgramacionNCapas.ML.Colonia;
-import com.Uziel.UCastanedaProgramacionNCapas.ML.Result;
+import com.Uziel.UCastanedaProgramacionNCapas.JPA.Result;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -26,18 +25,18 @@ public class ColoniaJPADAOImplementation implements IColoniaJPA{
         Result result = new Result();
         
         try {
-            TypedQuery <ColoniaJPA> queryColonia = entityManager.createQuery("FROM ColoniaJPA coloniaJPA WHERE coloniaJPA.MunicipioJPA.IdMunicipio = :IdMunicipio", ColoniaJPA.class);
-            queryColonia.setParameter("IdMunicipio", IdMunicipio);
-            
-            List<ColoniaJPA> coloniasJPA = queryColonia.getResultList();
-            List<Colonia> colonias = new ArrayList<>();
-            
-            for (ColoniaJPA coloniaJPA : coloniasJPA) {
-                Colonia colonia = modelMapper.map(coloniaJPA, Colonia.class);
-                colonias.add(colonia);
-            }
-            
-            result.objects = (List<Object>)(List<?>)colonias;
+//            TypedQuery <ColoniaJPA> queryColonia = entityManager.createQuery("FROM ColoniaJPA coloniaJPA WHERE coloniaJPA.MunicipioJPA.IdMunicipio = :IdMunicipio", ColoniaJPA.class);
+//            queryColonia.setParameter("IdMunicipio", IdMunicipio);
+//            
+//            List<ColoniaJPA> coloniasJPA = queryColonia.getResultList();
+//            List<Colonia> colonias = new ArrayList<>();
+//            
+//            for (ColoniaJPA coloniaJPA : coloniasJPA) {
+//                Colonia colonia = modelMapper.map(coloniaJPA, Colonia.class);
+//                colonias.add(colonia);
+//            }
+//            
+//            result.objects = (List<Object>)(List<?>)colonias;
             result.correct = true;
         } catch (Exception ex) {
             result.correct = false;

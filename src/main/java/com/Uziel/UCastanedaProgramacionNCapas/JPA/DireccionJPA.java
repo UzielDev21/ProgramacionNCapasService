@@ -1,5 +1,6 @@
 package com.Uziel.UCastanedaProgramacionNCapas.JPA;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -34,6 +35,7 @@ public class DireccionJPA {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idusuario")
+    @JsonBackReference
     public UsuarioJPA UsuarioJPA;
 
 //------------------------------------------------------------------SETTERS Y GETTERS------------------------------------------------------------------//
@@ -77,23 +79,6 @@ public class DireccionJPA {
 
     public String getNumeroExterior() {
         return NumeroExterior;
-    }
-
-    public void setColoniaJPA(ColoniaJPA ColoniaJPA) {
-        this.ColoniaJPA = ColoniaJPA;
-    }
-
-    public ColoniaJPA getColoniaJPA() {
-        return ColoniaJPA;
-    }
-
-    public void setUsuarioJPA(UsuarioJPA UsuarioJPA) {
-        this.UsuarioJPA = UsuarioJPA;
-    }
-
-    public UsuarioJPA getUsuarioJPA() {
-        return UsuarioJPA;
-    }
-    
+    }   
     
 }

@@ -50,13 +50,5 @@ public class EstadoJPA {
     public String getNombre(){
         return Nombre;
     }
-    
-    public void setPaisJPA(PaisJPA PaisJPA){
-        this.PaisJPA = PaisJPA;
-    }
-    
-    public PaisJPA getPaisJPA(){
-        return PaisJPA;
-    }
 
 }

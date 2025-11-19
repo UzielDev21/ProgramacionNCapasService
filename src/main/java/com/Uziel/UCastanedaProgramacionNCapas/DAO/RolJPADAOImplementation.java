@@ -1,8 +1,7 @@
 package com.Uziel.UCastanedaProgramacionNCapas.DAO;
 
 import com.Uziel.UCastanedaProgramacionNCapas.JPA.RolJPA;
-import com.Uziel.UCastanedaProgramacionNCapas.ML.Result;
-import com.Uziel.UCastanedaProgramacionNCapas.ML.Rol;
+import com.Uziel.UCastanedaProgramacionNCapas.JPA.Result;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -27,18 +26,17 @@ public class RolJPADAOImplementation implements IRolJPA {
         Result result = new Result();
 
         try {
-            TypedQuery<RolJPA> queryRol = entityManager.createQuery("FROM RolJPA", RolJPA.class);
-            List<RolJPA> rolesJPA = queryRol.getResultList();
-
-//            List<Rol> roles = rolesJPA.stream().map(rolJPA -> modelMapper.map(rolJPA, Rol.class)).collect(Collectors.toList());
-            List<Rol> roles = new ArrayList<>();
-
-            for (RolJPA rolJPA : rolesJPA) {
-                Rol rol = modelMapper.map(rolJPA, Rol.class);
-                roles.add(rol);
-            }
-
-            result.objects = (List<Object>) (List<?>) roles;
+//            TypedQuery<RolJPA> queryRol = entityManager.createQuery("FROM RolJPA", RolJPA.class);
+//            List<RolJPA> rolesJPA = queryRol.getResultList();
+//
+//            List<Rol> roles = new ArrayList<>();
+//
+//            for (RolJPA rolJPA : rolesJPA) {
+//                Rol rol = modelMapper.map(rolJPA, Rol.class);
+//                roles.add(rol);
+//            }
+//
+//            result.objects = (List<Object>) (List<?>) roles;
             result.correct = true;
 
         } catch (Exception ex) {

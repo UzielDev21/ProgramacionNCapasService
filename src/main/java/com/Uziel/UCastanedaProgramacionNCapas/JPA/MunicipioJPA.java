@@ -50,12 +50,4 @@ public class MunicipioJPA {
         return Nombre;
     }
     
-    public void setEstadoJPA(EstadoJPA EstadoJPA){
-        this.EstadoJPA = EstadoJPA;
-    }
-    
-    public EstadoJPA getEstadoJPA(){
-        return EstadoJPA;
-    }
-    
 }

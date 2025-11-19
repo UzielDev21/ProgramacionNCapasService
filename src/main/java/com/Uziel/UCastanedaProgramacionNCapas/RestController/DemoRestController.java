@@ -25,7 +25,7 @@ public class DemoRestController {
                 String Saludar = "Hola " + nombre;
                 result.object = Saludar;
                 result.correct = true;
-                result.status = 200;                
+                result.status = 200;        
             }
             
         } catch (Exception ex) {

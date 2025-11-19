@@ -1,8 +1,7 @@
 package com.Uziel.UCastanedaProgramacionNCapas.DAO;
 
 import com.Uziel.UCastanedaProgramacionNCapas.JPA.MunicipioJPA;
-import com.Uziel.UCastanedaProgramacionNCapas.ML.Municipio;
-import com.Uziel.UCastanedaProgramacionNCapas.ML.Result;
+import com.Uziel.UCastanedaProgramacionNCapas.JPA.Result;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -13,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class MunicipioJPADAOImplementation implements IMunicipio{
+public class MunicipioJPADAOImplementation implements IMunicipioJPA{
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -26,19 +25,19 @@ public class MunicipioJPADAOImplementation implements IMunicipio{
         Result result = new Result();
         
         try {
-            TypedQuery <MunicipioJPA> queryMunicipio = entityManager.createQuery("FROM MunicipioJPA municipioJPA WHERE municipioJPA.EstadoJPA.IdEstado = :IdEstado", MunicipioJPA.class);
-            queryMunicipio.setParameter("IdEstado", IdEstado);
+            TypedQuery <MunicipioJPA> municipiosJPA = entityManager.createQuery(
+                    "FROM MunicipioJPA municipioJPA WHERE municipioJPA.EstadoJPA.IdEstado = :IdEstado", MunicipioJPA.class);
+            municipiosJPA.setParameter("IdEstado", IdEstado);
             
-            List<MunicipioJPA> municipiosJPA = queryMunicipio.getResultList();
-            List<Municipio> municipios = new ArrayList<>();
+            List<MunicipioJPA> municipios = municipiosJPA.getResultList();
             
-            for (MunicipioJPA municipioJPA : municipiosJPA) {
-             Municipio municipio = modelMapper.map(municipioJPA, Municipio.class);
-             municipios.add(municipio);
+            if (municipios == null || municipios.isEmpty()) {
+                result.correct = false;
+                result.errorMessage = "No existe el estado con el Id = " + IdEstado;
+            } else {
+                result.correct = true;
+                result.object = municipios;
             }
-            
-            result.objects = (List<Object>)(List<?>) municipios;
-            result.correct = true;
             
         } catch (Exception ex) {
             result.correct = false;

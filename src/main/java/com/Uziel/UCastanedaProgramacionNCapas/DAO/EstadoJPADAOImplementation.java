@@ -1,8 +1,7 @@
 package com.Uziel.UCastanedaProgramacionNCapas.DAO;
 
 import com.Uziel.UCastanedaProgramacionNCapas.JPA.EstadoJPA;
-import com.Uziel.UCastanedaProgramacionNCapas.ML.Estado;
-import com.Uziel.UCastanedaProgramacionNCapas.ML.Result;
+import com.Uziel.UCastanedaProgramacionNCapas.JPA.Result;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -26,17 +25,17 @@ public class EstadoJPADAOImplementation implements IEstadoJPA {
         Result result = new Result();
 
         try {
-            TypedQuery<EstadoJPA> queryEstado = entityManager.createQuery("FROM EstadoJPA", EstadoJPA.class);
-            List<EstadoJPA> estadosJPA = queryEstado.getResultList();
-
-            List<Estado> estados = new ArrayList<>();
-
-            for (EstadoJPA estadoJPA : estadosJPA) {
-                Estado estado = modelMapper.map(estadosJPA, Estado.class);
-                estados.add(estado);
-            }
-
-            result.objects = (List<Object>) (List<?>) estados;
+//            TypedQuery<EstadoJPA> queryEstado = entityManager.createQuery("FROM EstadoJPA", EstadoJPA.class);
+//            List<EstadoJPA> estadosJPA = queryEstado.getResultList();
+//
+//            List<Estado> estados = new ArrayList<>();
+//
+//            for (EstadoJPA estadoJPA : estadosJPA) {
+//                Estado estado = modelMapper.map(estadosJPA, Estado.class);
+//                estados.add(estado);
+//            }
+//
+//            result.objects = (List<Object>) (List<?>) estados;
             result.correct = true;
 
         } catch (Exception ex) {
@@ -54,20 +53,20 @@ public class EstadoJPADAOImplementation implements IEstadoJPA {
 
         try {
 
-            TypedQuery<EstadoJPA> queryEstado = entityManager.createQuery("FROM EstadoJPA estadoJPA WHERE estadoJPA.PaisJPA.IdPais = :IdPais", EstadoJPA.class);
-            queryEstado.setParameter("IdPais", IdPais);
-
-            List<EstadoJPA> estadosJPA = queryEstado.getResultList();
-
-            List<Estado> estados = new ArrayList<>();
-
-            for (EstadoJPA estadoJPA : estadosJPA) {
-                Estado estado = modelMapper.map(estadoJPA, Estado.class);
-                estados.add(estado);
+            TypedQuery<EstadoJPA> estadosJPA = entityManager.createQuery(
+                    "FROM EstadoJPA estadoJPA WHERE estadoJPA.PaisJPA.IdPais = :IdPais", EstadoJPA.class);
+            estadosJPA.setParameter("IdPais", IdPais);
+            
+            List<EstadoJPA> estados = estadosJPA.getResultList();
+            
+            if (estados == null || estados.isEmpty()) {
+                result.correct = false;
+                result.errorMessage = "No existe el pais con el Id = " + IdPais;
+            } else {
+                result.correct = true;
+                result.object = estados;
             }
 
-            result.objects = (List<Object>) (List<?>) estados;
-            result.correct = true;
         } catch (Exception ex) {
             result.correct = false;
             result.errorMessage = ex.getLocalizedMessage();

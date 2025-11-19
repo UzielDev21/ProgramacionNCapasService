@@ -1,8 +1,8 @@
 package com.Uziel.UCastanedaProgramacionNCapas.DAO;
 
-import com.Uziel.UCastanedaProgramacionNCapas.ML.Result;
+import com.Uziel.UCastanedaProgramacionNCapas.JPA.Result;
 
-public interface IMunicipio {
+public interface IMunicipioJPA {
 
     Result GetByIdEstadoJPA(int IdEstado);
     

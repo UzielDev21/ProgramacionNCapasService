@@ -1,15 +1,15 @@
 package com.Uziel.UCastanedaProgramacionNCapas.DAO;
 
-import com.Uziel.UCastanedaProgramacionNCapas.ML.Direccion;
-import com.Uziel.UCastanedaProgramacionNCapas.ML.Result;
+import com.Uziel.UCastanedaProgramacionNCapas.JPA.DireccionJPA;
+import com.Uziel.UCastanedaProgramacionNCapas.JPA.Result;
 
 public interface IDireccionJPA {
 
     Result DireccionGetByIdJPA(int IdDireccion);
     
-    Result DireccionAddJPA(Direccion direccion, int IdUsuario);
+    Result DireccionAddJPA(DireccionJPA direccionJPA, int IdUsuario);
     
-    Result DireccionUpdateJPA(Direccion direccion);
+    Result DireccionUpdateJPA(DireccionJPA direccionJPA);
     
     Result DireccionDeleteJPA(int IdDireccion);
     

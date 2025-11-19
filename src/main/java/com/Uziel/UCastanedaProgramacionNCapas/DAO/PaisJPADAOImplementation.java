@@ -1,8 +1,7 @@
 package com.Uziel.UCastanedaProgramacionNCapas.DAO;
 
 import com.Uziel.UCastanedaProgramacionNCapas.JPA.PaisJPA;
-import com.Uziel.UCastanedaProgramacionNCapas.ML.Pais;
-import com.Uziel.UCastanedaProgramacionNCapas.ML.Result;
+import com.Uziel.UCastanedaProgramacionNCapas.JPA.Result;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -30,15 +29,7 @@ public class PaisJPADAOImplementation implements IPaisJPA {
             TypedQuery<PaisJPA> queryPais = entityManager.createQuery("FROM PaisJPA", PaisJPA.class);
             List<PaisJPA> paisesJPA = queryPais.getResultList();
 
-            List<Pais> paises = new ArrayList<>();
-
-            for (PaisJPA paisJPA : paisesJPA) {
-
-                Pais pais = modelMapper.map(paisJPA, Pais.class);
-                paises.add(pais);
-            }
-
-            result.objects = (List<Object>) (List<?>) paises;
+            result.object = paisesJPA;
             result.correct = true;
 
         } catch (Exception ex) {

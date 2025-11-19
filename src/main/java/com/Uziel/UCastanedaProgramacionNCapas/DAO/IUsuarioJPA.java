@@ -1,16 +1,16 @@
 package com.Uziel.UCastanedaProgramacionNCapas.DAO;
 
-import com.Uziel.UCastanedaProgramacionNCapas.ML.Result;
-import com.Uziel.UCastanedaProgramacionNCapas.ML.Usuario;
+import com.Uziel.UCastanedaProgramacionNCapas.JPA.Result;
+import com.Uziel.UCastanedaProgramacionNCapas.JPA.UsuarioJPA;
 import java.util.List;
 
 public interface IUsuarioJPA {
     
     Result GetAllJPA();
     
-    Result AddJPA(Usuario usuario);
+    Result AddJPA(UsuarioJPA usuarioJPA);
     
-    Result UpdateJPA(Usuario usuario);
+    Result UpdateJPA(UsuarioJPA usuarioJPA);
     
     Result UpdateImagenJPA(int IdUsuario, String imagenBase64);
     
@@ -18,7 +18,7 @@ public interface IUsuarioJPA {
     
     Result GetByIdJPA(int IdUsuario);
     
-    Result BuscarUsuarioJPA(Usuario usuario);
+    Result BuscarUsuarioJPA(UsuarioJPA usuarioJPA);
     
-    Result AddAllJPA(List<Usuario> usuarios);
+    Result AddAllJPA(List<UsuarioJPA> usuariosJPA);
 }

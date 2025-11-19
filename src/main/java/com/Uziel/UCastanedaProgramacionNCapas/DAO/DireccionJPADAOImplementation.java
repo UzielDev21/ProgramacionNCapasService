@@ -3,8 +3,7 @@ package com.Uziel.UCastanedaProgramacionNCapas.DAO;
 import com.Uziel.UCastanedaProgramacionNCapas.JPA.ColoniaJPA;
 import com.Uziel.UCastanedaProgramacionNCapas.JPA.DireccionJPA;
 import com.Uziel.UCastanedaProgramacionNCapas.JPA.UsuarioJPA;
-import com.Uziel.UCastanedaProgramacionNCapas.ML.Direccion;
-import com.Uziel.UCastanedaProgramacionNCapas.ML.Result;
+import com.Uziel.UCastanedaProgramacionNCapas.JPA.Result;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.modelmapper.ModelMapper;
@@ -27,13 +26,13 @@ public class DireccionJPADAOImplementation implements IDireccionJPA {
         Result result = new Result();
         
         try {
-            DireccionJPA direccionJPA = entityManager.find(DireccionJPA.class, IdDireccion);
-            Direccion direccion = modelMapper.map(direccionJPA, Direccion.class);
-            
-            ColoniaJPA coloniaJPA = direccionJPA.getColoniaJPA();
-            
-            result.object = direccion;
-            result.correct = true;
+//            DireccionJPA direccionJPA = entityManager.find(DireccionJPA.class, IdDireccion);
+//            Direccion direccion = modelMapper.map(direccionJPA, Direccion.class);
+//            
+//            ColoniaJPA coloniaJPA = direccionJPA.getColoniaJPA();
+//            
+//            result.object = direccion;
+//            result.correct = true;
             
         } catch (Exception ex) {
             result.correct = false;
@@ -46,17 +45,17 @@ public class DireccionJPADAOImplementation implements IDireccionJPA {
     
     @Override
     @Transactional
-    public Result DireccionAddJPA(Direccion direccion, int IdUsuario) {
+    public Result DireccionAddJPA(DireccionJPA direccionJPA, int IdUsuario) {
         Result result = new Result();
 
         try {
-            DireccionJPA direccionJPA = modelMapper.map(direccion, DireccionJPA.class);
-            UsuarioJPA usuarioJPA = entityManager.find(UsuarioJPA.class, IdUsuario);
-            ColoniaJPA coloniaJPA = entityManager.find(ColoniaJPA.class, direccion.Colonia.getIdColonia());
-            direccionJPA.setUsuarioJPA(usuarioJPA);
-            direccionJPA.setColoniaJPA(coloniaJPA);
-
-            entityManager.persist(direccionJPA);
+//            DireccionJPA direccionJPA = modelMapper.map(direccion, DireccionJPA.class);
+//            UsuarioJPA usuarioJPA = entityManager.find(UsuarioJPA.class, IdUsuario);
+//            ColoniaJPA coloniaJPA = entityManager.find(ColoniaJPA.class, direccion.Colonia.getIdColonia());
+//            direccionJPA.setUsuarioJPA(usuarioJPA);
+//            direccionJPA.setColoniaJPA(coloniaJPA);
+//
+//            entityManager.persist(direccionJPA);
             result.correct = true;
 
         } catch (Exception ex) {
@@ -70,18 +69,18 @@ public class DireccionJPADAOImplementation implements IDireccionJPA {
 
     @Override
     @Transactional
-    public Result DireccionUpdateJPA(Direccion direccion) {
+    public Result DireccionUpdateJPA(DireccionJPA direccionJPA) {
         Result result = new Result();
 
         try {
-            DireccionJPA direccionBase = entityManager.find(DireccionJPA.class, direccion.getIdDireccion());
-            DireccionJPA direccionJPA = modelMapper.map(direccion, DireccionJPA.class);
-
-            ColoniaJPA coloniaJPA = entityManager.find(ColoniaJPA.class, direccion.Colonia.getIdColonia());
-            direccionJPA.setColoniaJPA(coloniaJPA);
-
-            direccionJPA.setUsuarioJPA(direccionBase.getUsuarioJPA());
-            entityManager.merge(direccionJPA);
+//            DireccionJPA direccionBase = entityManager.find(DireccionJPA.class, direccion.getIdDireccion());
+//            DireccionJPA direccionJPA = modelMapper.map(direccion, DireccionJPA.class);
+//
+//            ColoniaJPA coloniaJPA = entityManager.find(ColoniaJPA.class, direccion.Colonia.getIdColonia());
+//            direccionJPA.setColoniaJPA(coloniaJPA);
+//
+//            direccionJPA.setUsuarioJPA(direccionBase.getUsuarioJPA());
+//            entityManager.merge(direccionJPA);
             result.correct = true;
         } catch (Exception ex) {
             result.correct = false;
