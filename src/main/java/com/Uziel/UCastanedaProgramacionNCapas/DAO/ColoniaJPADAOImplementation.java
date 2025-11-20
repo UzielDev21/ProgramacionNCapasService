@@ -25,19 +25,20 @@ public class ColoniaJPADAOImplementation implements IColoniaJPA{
         Result result = new Result();
         
         try {
-//            TypedQuery <ColoniaJPA> queryColonia = entityManager.createQuery("FROM ColoniaJPA coloniaJPA WHERE coloniaJPA.MunicipioJPA.IdMunicipio = :IdMunicipio", ColoniaJPA.class);
-//            queryColonia.setParameter("IdMunicipio", IdMunicipio);
-//            
-//            List<ColoniaJPA> coloniasJPA = queryColonia.getResultList();
-//            List<Colonia> colonias = new ArrayList<>();
-//            
-//            for (ColoniaJPA coloniaJPA : coloniasJPA) {
-//                Colonia colonia = modelMapper.map(coloniaJPA, Colonia.class);
-//                colonias.add(colonia);
-//            }
-//            
-//            result.objects = (List<Object>)(List<?>)colonias;
-            result.correct = true;
+            TypedQuery <ColoniaJPA> coloniasJPA = entityManager.createQuery(
+                    "FROM ColoniaJPA coloniaJPA WHERE coloniaJPA.MunicipioJPA.IdMunicipio = :IdMunicipio", ColoniaJPA.class);
+            coloniasJPA.setParameter("IdMunicipio", IdMunicipio);
+            
+            List<ColoniaJPA> colonias = coloniasJPA.getResultList();
+            
+            if (colonias == null || colonias.isEmpty()) {
+                result.correct = false;
+                result.errorMessage = "No existe el municipio con el Id " + IdMunicipio;
+            } else {
+                result.correct = true;
+                result.object = colonias;
+            }
+            
         } catch (Exception ex) {
             result.correct = false;
             result.errorMessage = ex.getLocalizedMessage();

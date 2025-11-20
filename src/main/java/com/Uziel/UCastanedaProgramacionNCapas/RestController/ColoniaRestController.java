@@ -1,6 +1,6 @@
 package com.Uziel.UCastanedaProgramacionNCapas.RestController;
 
-import com.Uziel.UCastanedaProgramacionNCapas.DAO.MunicipioJPADAOImplementation;
+import com.Uziel.UCastanedaProgramacionNCapas.DAO.ColoniaJPADAOImplementation;
 import com.Uziel.UCastanedaProgramacionNCapas.JPA.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,25 +10,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("municipios")
+@RequestMapping("colonias")
 public class ColoniaRestController {
 
     
     @Autowired
-    private MunicipioJPADAOImplementation municipioJPADAOImplementation;
+    private ColoniaJPADAOImplementation coloniaJPADAOImplementation;
     
-    @GetMapping("/{IdEstado}")
-    public ResponseEntity GetByIdEstado(@PathVariable("IdEstado") int IdEstado){
+    @GetMapping("/{IdMunicipio}")
+    public ResponseEntity GetByIdEstado(@PathVariable("IdMunicipio") int IdMunicipio){
         Result result = new Result();
         
         try {
-            if (IdEstado != 0) {
+            if (IdMunicipio != 0) {
+               
+                result = coloniaJPADAOImplementation.GetByIdMunicipioJPA(IdMunicipio);
                 
-                result = municipioJPADAOImplementation.GetByIdEstadoJPA(IdEstado);
+                if (result.correct) {
+                    result.status = 200;
+                } else {
+                    result.status = 500;
+                }
                 
             } else {
                 result.correct = false;
-                result.errorMessage = "IdEstado no Valido";
+                result.errorMessage = "Municipio no Valido";
                 result.status = 400;
             }
         } catch (Exception ex) {
