@@ -72,21 +72,33 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
         Result result = new Result();
 
         try {
-//            UsuarioJPA usuarioBase = entityManager.find(UsuarioJPA.class, usuario.getIdUsuario());
-//
-//            UsuarioJPA usuarioJPA = modelMapper.map(usuario, UsuarioJPA.class);
-//
-//            usuarioJPA.setPassword(usuarioBase.getPassword());
-//            usuarioJPA.setImagen(usuarioBase.getImagen());
-//            usuarioJPA.setDireccionesJPA(usuarioBase.getDireccionesJPA());
-//
-//            RolJPA rolJPA = modelMapper.map(usuario.Rol, RolJPA.class);
-//            usuarioJPA.RolJPA = rolJPA;
-//
-//            entityManager.merge(usuarioJPA);
-//
-//            result.correct = true;
-
+            
+            UsuarioJPA usuarioPutJPA = entityManager.find(UsuarioJPA.class, usuarioJPA.getIdUsuario());
+            
+            if (usuarioPutJPA == null ) {
+                result.correct = false;
+                result.errorMessage = "El usuario no existe";
+                return result;
+            }
+            
+            usuarioPutJPA.setUserName(usuarioJPA.getUserName());
+            usuarioPutJPA.setNombre(usuarioJPA.getNombre());
+            usuarioPutJPA.setApellidoPaterno(usuarioJPA.getApellidoPaterno());
+            usuarioPutJPA.setApellidoMaterno(usuarioJPA.getApellidoMaterno());
+            usuarioPutJPA.setEmail(usuarioJPA.getEmail());
+            usuarioPutJPA.setFechaNacimiento(usuarioJPA.getFechaNacimiento());
+            usuarioPutJPA.setSexo(usuarioJPA.getSexo());
+            usuarioPutJPA.setTelefono(usuarioJPA.getTelefono());
+            usuarioPutJPA.setCelular(usuarioJPA.getCelular());
+            usuarioPutJPA.setCurp(usuarioJPA.getCurp());
+            
+            if (usuarioJPA.RolJPA != null) {
+                RolJPA rol = entityManager.find(RolJPA.class, usuarioJPA.RolJPA.getIdRol());
+                usuarioJPA.RolJPA = rol;
+            }
+            result.correct = true;
+            result.status = 200;
+            
         } catch (Exception ex) {
             result.correct = false;
             result.errorMessage = ex.getLocalizedMessage();
