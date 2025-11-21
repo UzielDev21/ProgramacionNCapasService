@@ -18,25 +18,16 @@ public class RolJPADAOImplementation implements IRolJPA {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Autowired
-    private ModelMapper modelMapper;
-
     @Override
     public Result GetAllJPA() {
         Result result = new Result();
 
         try {
-//            TypedQuery<RolJPA> queryRol = entityManager.createQuery("FROM RolJPA", RolJPA.class);
-//            List<RolJPA> rolesJPA = queryRol.getResultList();
-//
-//            List<Rol> roles = new ArrayList<>();
-//
-//            for (RolJPA rolJPA : rolesJPA) {
-//                Rol rol = modelMapper.map(rolJPA, Rol.class);
-//                roles.add(rol);
-//            }
-//
-//            result.objects = (List<Object>) (List<?>) roles;
+            TypedQuery<RolJPA> rolesJPA = entityManager.createQuery(
+                    "FROM RolJPA", RolJPA.class);
+            List<RolJPA> roles = rolesJPA.getResultList();
+
+            result.object = roles;
             result.correct = true;
 
         } catch (Exception ex) {

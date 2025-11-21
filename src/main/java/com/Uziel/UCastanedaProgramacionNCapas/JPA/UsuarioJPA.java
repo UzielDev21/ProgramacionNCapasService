@@ -67,7 +67,7 @@ public class UsuarioJPA {
     public RolJPA RolJPA;
     
     @OneToMany(mappedBy = "UsuarioJPA", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference //crees que sea por este?
     public List<DireccionJPA> DireccionesJPA = new ArrayList<>();
     
 //------------------------------------------------------------------SETTERS Y GETTERS------------------------------------------------------------------//

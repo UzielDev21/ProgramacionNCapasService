@@ -16,23 +16,18 @@ public class DireccionJPADAOImplementation implements IDireccionJPA {
 
     @PersistenceContext
     private EntityManager entityManager;
-
-    @Autowired
-    private ModelMapper modelMapper;
-
+            
     @Override
     @Transactional
     public Result DireccionGetByIdJPA(int IdDireccion){
         Result result = new Result();
         
         try {
-//            DireccionJPA direccionJPA = entityManager.find(DireccionJPA.class, IdDireccion);
-//            Direccion direccion = modelMapper.map(direccionJPA, Direccion.class);
-//            
-//            ColoniaJPA coloniaJPA = direccionJPA.getColoniaJPA();
-//            
-//            result.object = direccion;
-//            result.correct = true;
+            DireccionJPA direccionJPA = entityManager.find(DireccionJPA.class, IdDireccion);
+
+            
+            result.object = direccionJPA;
+            result.correct = true;
             
         } catch (Exception ex) {
             result.correct = false;
