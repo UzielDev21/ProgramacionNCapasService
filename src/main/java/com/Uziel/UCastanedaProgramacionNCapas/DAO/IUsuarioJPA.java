@@ -10,7 +10,7 @@ public interface IUsuarioJPA {
     
     Result AddJPA(UsuarioJPA usuarioJPA);
     
-    Result UpdateJPA(UsuarioJPA usuarioJPA);
+    Result UpdateJPA(UsuarioJPA usuario);
     
     Result UpdateImagenJPA(int IdUsuario, String imagenBase64);
     

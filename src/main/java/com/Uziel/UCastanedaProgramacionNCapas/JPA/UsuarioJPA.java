@@ -1,5 +1,6 @@
 package com.Uziel.UCastanedaProgramacionNCapas.JPA;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -194,4 +195,14 @@ public class UsuarioJPA {
     public String getImagen(){
         return Imagen;
     }
+    
+    @JsonIgnore 
+    public List<DireccionJPA> getDireccionesJPA() {
+        return DireccionesJPA;
+    }
+
+    public void setDireccionesJPA(List<DireccionJPA> DireccionesJPA) {
+        this.DireccionesJPA = DireccionesJPA;
+    }
+
 }

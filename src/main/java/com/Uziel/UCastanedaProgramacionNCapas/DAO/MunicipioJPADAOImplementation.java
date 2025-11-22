@@ -36,7 +36,8 @@ public class MunicipioJPADAOImplementation implements IMunicipioJPA{
                 result.errorMessage = "No existe el estado con el Id = " + IdEstado;
             } else {
                 result.correct = true;
-                result.object = municipios;
+//                result.object = municipios;
+                result.objects = (List<Object>)(List<?>) municipios;
             }
             
         } catch (Exception ex) {

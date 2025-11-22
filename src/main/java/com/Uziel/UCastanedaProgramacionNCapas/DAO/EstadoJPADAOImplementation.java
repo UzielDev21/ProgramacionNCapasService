@@ -56,15 +56,16 @@ public class EstadoJPADAOImplementation implements IEstadoJPA {
             TypedQuery<EstadoJPA> estadosJPA = entityManager.createQuery(
                     "FROM EstadoJPA estadoJPA WHERE estadoJPA.PaisJPA.IdPais = :IdPais", EstadoJPA.class);
             estadosJPA.setParameter("IdPais", IdPais);
-            
+
             List<EstadoJPA> estados = estadosJPA.getResultList();
-            
+
             if (estados == null || estados.isEmpty()) {
                 result.correct = false;
                 result.errorMessage = "No existe el pais con el Id = " + IdPais;
             } else {
                 result.correct = true;
-                result.object = estados;
+//                result.object = estados;
+                result.objects = (List<Object>) (List<?>) estados;
             }
 
         } catch (Exception ex) {

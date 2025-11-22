@@ -34,8 +34,8 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
             TypedQuery<UsuarioJPA> queryUsuario = entityManager.createQuery("FROM UsuarioJPA", UsuarioJPA.class);
             List<UsuarioJPA> usuariosJPA = queryUsuario.getResultList();
 
-            result.object = usuariosJPA;
-
+//            result.object = usuariosJPA;
+            result.objects = (List<Object>)(List<?>) usuariosJPA;
             result.correct = true;
 
         } catch (Exception ex) {
@@ -68,36 +68,32 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
 
     @Override
     @Transactional
-    public Result UpdateJPA(UsuarioJPA usuarioJPA) {
+    public Result UpdateJPA(UsuarioJPA usuario) {
         Result result = new Result();
 
         try {
             
-            UsuarioJPA usuarioPutJPA = entityManager.find(UsuarioJPA.class, usuarioJPA.getIdUsuario());
-            
-            if (usuarioPutJPA == null ) {
-                result.correct = false;
-                result.errorMessage = "El usuario no existe";
-                return result;
+            UsuarioJPA usuarioPutJPA = entityManager.find(UsuarioJPA.class, usuario.getIdUsuario());
+//            
+            if (usuarioPutJPA == null) {
+                if (usuario.DireccionesJPA != null || usuario.DireccionesJPA.isEmpty()) {
+                    entityManager.persist(usuario);
+                    result.correct = true;
+                    result.status = 200; 
+                } else {
+                    usuario.DireccionesJPA.get(0).UsuarioJPA = usuario;
+                    entityManager.persist(usuario);
+                    result.correct = true;
+                    result.status = 200;
+                }
+            } else {
+                usuario.setPassword(usuarioPutJPA.getPassword());
+                usuario.setImagen(usuarioPutJPA.getImagen());
+                usuario.setDireccionesJPA(usuarioPutJPA.getDireccionesJPA());
+                entityManager.merge(usuario);
+                result.correct = true;
+                result.status = 200;
             }
-            
-            usuarioPutJPA.setUserName(usuarioJPA.getUserName());
-            usuarioPutJPA.setNombre(usuarioJPA.getNombre());
-            usuarioPutJPA.setApellidoPaterno(usuarioJPA.getApellidoPaterno());
-            usuarioPutJPA.setApellidoMaterno(usuarioJPA.getApellidoMaterno());
-            usuarioPutJPA.setEmail(usuarioJPA.getEmail());
-            usuarioPutJPA.setFechaNacimiento(usuarioJPA.getFechaNacimiento());
-            usuarioPutJPA.setSexo(usuarioJPA.getSexo());
-            usuarioPutJPA.setTelefono(usuarioJPA.getTelefono());
-            usuarioPutJPA.setCelular(usuarioJPA.getCelular());
-            usuarioPutJPA.setCurp(usuarioJPA.getCurp());
-            
-            if (usuarioJPA.RolJPA != null) {
-                RolJPA rol = entityManager.find(RolJPA.class, usuarioJPA.RolJPA.getIdRol());
-                usuarioJPA.RolJPA = rol;
-            }
-            result.correct = true;
-            result.status = 200;
             
         } catch (Exception ex) {
             result.correct = false;

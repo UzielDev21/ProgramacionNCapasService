@@ -27,7 +27,8 @@ public class RolJPADAOImplementation implements IRolJPA {
                     "FROM RolJPA", RolJPA.class);
             List<RolJPA> roles = rolesJPA.getResultList();
 
-            result.object = roles;
+//            result.object = roles;
+            result.objects = (List<Object>)(List<?>) roles;
             result.correct = true;
 
         } catch (Exception ex) {

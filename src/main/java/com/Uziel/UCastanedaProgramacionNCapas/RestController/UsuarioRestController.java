@@ -69,7 +69,7 @@ public class UsuarioRestController {
     public ResponseEntity AddUsuario(@RequestBody UsuarioJPA usuarioJPA) {
         Result result = new Result();
 
-        try {//Deja veo como la mando yo, si 
+        try {
             result = usuarioJPADAOImplementation.AddJPA(usuarioJPA);
 
             if (result.status == 0) {

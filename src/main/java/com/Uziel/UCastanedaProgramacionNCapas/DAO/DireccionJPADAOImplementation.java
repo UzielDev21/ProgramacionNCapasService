@@ -4,8 +4,12 @@ import com.Uziel.UCastanedaProgramacionNCapas.JPA.ColoniaJPA;
 import com.Uziel.UCastanedaProgramacionNCapas.JPA.DireccionJPA;
 import com.Uziel.UCastanedaProgramacionNCapas.JPA.UsuarioJPA;
 import com.Uziel.UCastanedaProgramacionNCapas.JPA.Result;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
+import java.util.List;
+import java.util.NoSuchElementException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -44,14 +48,15 @@ public class DireccionJPADAOImplementation implements IDireccionJPA {
         Result result = new Result();
 
         try {
-//            DireccionJPA direccionJPA = modelMapper.map(direccion, DireccionJPA.class);
-//            UsuarioJPA usuarioJPA = entityManager.find(UsuarioJPA.class, IdUsuario);
-//            ColoniaJPA coloniaJPA = entityManager.find(ColoniaJPA.class, direccion.Colonia.getIdColonia());
-//            direccionJPA.setUsuarioJPA(usuarioJPA);
-//            direccionJPA.setColoniaJPA(coloniaJPA);
-//
-//            entityManager.persist(direccionJPA);
+            UsuarioJPA usuarioJPA = entityManager.find(UsuarioJPA.class, IdUsuario);
+            if (usuarioJPA == null) {
+                throw new NoSuchElementException("el usuario con el Id " + IdUsuario + " no existe");
+            }
+            
+            direccionJPA.UsuarioJPA = usuarioJPA;
+            entityManager.persist(direccionJPA);
             result.correct = true;
+            result.status = 201;
 
         } catch (Exception ex) {
             result.correct = false;

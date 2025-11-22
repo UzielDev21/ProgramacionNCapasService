@@ -36,7 +36,8 @@ public class ColoniaJPADAOImplementation implements IColoniaJPA{
                 result.errorMessage = "No existe el municipio con el Id " + IdMunicipio;
             } else {
                 result.correct = true;
-                result.object = colonias;
+//                result.object = colonias;
+                result.objects = (List<Object>)(List<?>)colonias;
             }
             
         } catch (Exception ex) {
