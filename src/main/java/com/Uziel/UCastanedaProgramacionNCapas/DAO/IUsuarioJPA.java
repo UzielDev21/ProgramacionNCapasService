@@ -18,7 +18,7 @@ public interface IUsuarioJPA {
     
     Result GetByIdJPA(int IdUsuario);
     
-    Result BuscarUsuarioJPA(UsuarioJPA usuarioJPA);
+    Result BuscarUsuarioJPA(UsuarioJPA usuario);
     
     Result AddAllJPA(List<UsuarioJPA> usuariosJPA);
 }

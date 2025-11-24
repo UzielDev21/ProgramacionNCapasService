@@ -35,7 +35,7 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
             List<UsuarioJPA> usuariosJPA = queryUsuario.getResultList();
 
 //            result.object = usuariosJPA;
-            result.objects = (List<Object>)(List<?>) usuariosJPA;
+            result.objects = (List<Object>) (List<?>) usuariosJPA;
             result.correct = true;
 
         } catch (Exception ex) {
@@ -72,14 +72,14 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
         Result result = new Result();
 
         try {
-            
+
             UsuarioJPA usuarioPutJPA = entityManager.find(UsuarioJPA.class, usuario.getIdUsuario());
 //            
             if (usuarioPutJPA == null) {
                 if (usuario.DireccionesJPA != null || usuario.DireccionesJPA.isEmpty()) {
                     entityManager.persist(usuario);
                     result.correct = true;
-                    result.status = 200; 
+                    result.status = 200;
                 } else {
                     usuario.DireccionesJPA.get(0).UsuarioJPA = usuario;
                     entityManager.persist(usuario);
@@ -94,7 +94,7 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
                 result.correct = true;
                 result.status = 200;
             }
-            
+
         } catch (Exception ex) {
             result.correct = false;
             result.errorMessage = ex.getLocalizedMessage();
@@ -219,79 +219,72 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
     }
 
     @Override
-    public Result BuscarUsuarioJPA(UsuarioJPA usuarioJPA) {
+    public Result BuscarUsuarioJPA(UsuarioJPA usuario) {
         Result result = new Result();
 
         try {
-//            String queryValidar = "FROM UsuarioJPA usuarioJPA";
-//            boolean filtro = false;
-//
-//            if (usuario.getNombre() != null && !usuario.getNombre().isEmpty()) {
-//                if (!filtro) {
-//                    queryValidar = queryValidar + " WHERE LOWER(usuarioJPA.Nombre) LIKE :nombre";
-//                    filtro = true;
-//                } else {
-//                    queryValidar = queryValidar + " AND LOWER(usuarioJPA.Nombre) LIKE :nombre";
-//                }
-//            }
-//
-//            if (usuario.getApellidoPaterno() != null && !usuario.getApellidoPaterno().isEmpty()) {
-//                if (!filtro) {
-//                    queryValidar = queryValidar + " WHERE LOWER(usuarioJPA.ApellidoPaterno) LIKE :apellidoPaterno";
-//                    filtro = true;
-//                } else {
-//                    queryValidar = queryValidar + " AND LOWER(usuarioJPA.ApellidoPaterno) LIKE :apellidoPaterno";
-//                }
-//            }
-//
-//            if (usuario.getApellidoMaterno() != null && !usuario.getApellidoMaterno().isEmpty()) {
-//                if (!filtro) {
-//                    queryValidar = queryValidar + " WHERE LOWER(usuarioJPA.ApellidoMaterno) LIKE :apellidoMaterno";
-//                    filtro = true;
-//                } else {
-//                    queryValidar = queryValidar + " AND LOWER(usuarioJPA.ApellidoMaterno) LIKE :apellidoMaterno";
-//                }
-//            }
-//
-//            if (usuario.Rol != null && usuario.Rol.getIdRol() > 0) {
-//                if (!filtro) {
-//                    queryValidar = queryValidar + " WHERE usuarioJPA.RolJPA.IdRol = :idRol";
-//                    filtro = true;
-//                } else {
-//                    queryValidar = queryValidar + " AND usuarioJPA.RolJPA.IdRol = :idRol";
-//                }
-//            }
-//
-//            queryValidar = queryValidar + " ORDER BY usuarioJPA.IdUsuario";
-//
-//            TypedQuery<UsuarioJPA> queryBuscar = entityManager.createQuery(queryValidar, UsuarioJPA.class);
-//
-//            if (usuario.getNombre() != null && !usuario.getNombre().isEmpty()) {
-//                queryBuscar.setParameter("nombre", "%" + usuario.getNombre() + "%");
-//            }
-//
-//            if (usuario.getApellidoPaterno() != null && !usuario.getApellidoPaterno().isEmpty()) {
-//                queryBuscar.setParameter("apellidoPaterno", "%" + usuario.getApellidoPaterno() + "%");
-//            }
-//
-//            if (usuario.getApellidoMaterno() != null && !usuario.getApellidoMaterno().isEmpty()) {
-//                queryBuscar.setParameter("apellidoMaterno", "%" + usuario.getApellidoMaterno() + "%");
-//            }
-//            if (usuario.Rol != null && usuario.Rol.getIdRol() > 0) {
-//                queryBuscar.setParameter("idRol",  usuario.Rol.getIdRol());
-//            }
-//
-//            List<UsuarioJPA> usuariosJPA = queryBuscar.getResultList();
-//            List<Usuario> usuarios = new ArrayList<>();
-//
-//            for (UsuarioJPA usuarioJPA : usuariosJPA) {
-//                Usuario usuario2 = modelMapper.map(usuarioJPA, Usuario.class);
-//                usuario2.Rol = modelMapper.map(usuarioJPA.RolJPA, Rol.class);
-//
-//                usuarios.add(usuario2);
-//            }
-//
-//            result.objects = (List<Object>) (List<?>) usuarios;
+            String queryValidar = "FROM UsuarioJPA usuarioJPA";
+            boolean filtro = false;
+
+            if (usuario.getNombre() != null && !usuario.getNombre().isEmpty()) {
+                if (!filtro) {
+                    queryValidar = queryValidar + " WHERE LOWER(usuarioJPA.Nombre) LIKE :nombre";
+                    filtro = true;
+                } else {
+                    queryValidar = queryValidar + " AND LOWER(usuarioJPA.Nombre) LIKE :nombre";
+                }
+            }
+
+            if (usuario.getApellidoPaterno() != null && !usuario.getApellidoPaterno().isEmpty()) {
+                if (!filtro) {
+                    queryValidar = queryValidar + " WHERE LOWER(usuarioJPA.ApellidoPaterno) LIKE :apellidoPaterno";
+                    filtro = true;
+                } else {
+                    queryValidar = queryValidar + " AND LOWER(usuarioJPA.ApellidoPaterno) LIKE :apellidoPaterno";
+                }
+            }
+
+            if (usuario.getApellidoMaterno() != null && !usuario.getApellidoMaterno().isEmpty()) {
+                if (!filtro) {
+                    queryValidar = queryValidar + " WHERE LOWER(usuarioJPA.ApellidoMaterno) LIKE :apellidoMaterno";
+                    filtro = true;
+                } else {
+                    queryValidar = queryValidar + " AND LOWER(usuarioJPA.ApellidoMaterno) LIKE :apellidoMaterno";
+                }
+            }
+
+            if (usuario.RolJPA != null && usuario.RolJPA.getIdRol() > 0) {
+                if (!filtro) {
+                    queryValidar = queryValidar + " WHERE usuarioJPA.RolJPA.IdRol = :idRol";
+                    filtro = true;
+                } else {
+                    queryValidar = queryValidar + " AND usuarioJPA.RolJPA.IdRol = :idRol";
+                }
+            }
+
+            queryValidar = queryValidar + " ORDER BY usuarioJPA.IdUsuario";
+
+            TypedQuery<UsuarioJPA> queryBuscar = entityManager.createQuery(queryValidar, UsuarioJPA.class);
+
+            if (usuario.getNombre() != null && !usuario.getNombre().isEmpty()) {
+                queryBuscar.setParameter("nombre", "%" + usuario.getNombre() + "%");
+            }
+
+            if (usuario.getApellidoPaterno() != null && !usuario.getApellidoPaterno().isEmpty()) {
+                queryBuscar.setParameter("apellidoPaterno", "%" + usuario.getApellidoPaterno() + "%");
+            }
+
+            if (usuario.getApellidoMaterno() != null && !usuario.getApellidoMaterno().isEmpty()) {
+                queryBuscar.setParameter("apellidoMaterno", "%" + usuario.getApellidoMaterno() + "%");
+            }
+            if (usuario.RolJPA != null && usuario.RolJPA.getIdRol() > 0) {
+                queryBuscar.setParameter("idRol", usuario.RolJPA.getIdRol());
+            }
+
+            List<UsuarioJPA> usuariosJPA = queryBuscar.getResultList();
+            
+            
+            result.objects = (List<Object>) (List<?>) usuariosJPA;
             result.correct = true;
         } catch (Exception ex) {
             result.correct = false;

@@ -65,6 +65,24 @@ public class UsuarioRestController {
         return ResponseEntity.status(result.status).body(result);
     }
 
+    @PostMapping("/buscar")
+    public ResponseEntity GetAllDinamico(@RequestBody UsuarioJPA usuario){
+        Result result = new Result();
+        
+        try {
+            result = usuarioJPADAOImplementation.BuscarUsuarioJPA(usuario);
+            result.correct = true;
+            result.status = 200;
+        } catch (Exception ex) {
+            result.correct = false;
+            result.errorMessage = ex.getLocalizedMessage();
+            result.ex = ex;
+            result.status = 500;
+        }
+        
+        return ResponseEntity.status(result.status).body(result);
+    }
+    
     @PostMapping
     public ResponseEntity AddUsuario(@RequestBody UsuarioJPA usuarioJPA) {
         Result result = new Result();
