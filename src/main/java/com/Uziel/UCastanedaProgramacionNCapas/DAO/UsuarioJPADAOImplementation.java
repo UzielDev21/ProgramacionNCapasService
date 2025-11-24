@@ -111,24 +111,9 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
 
         try {
             UsuarioJPA usuarioBase = entityManager.find(UsuarioJPA.class, IdUsuario);
-//            UsuarioJPA usuarioJPA = modelMapper.map(usuario, UsuarioJPA.class);
-//            
+
             usuarioBase.setImagen(imagenBase64);
 
-//            usuarioJPA.setUserName(usuarioBase.getUserName());
-//            usuarioJPA.setNombre(usuarioBase.getNombre());
-//            usuarioJPA.setApellidoPaterno(usuarioBase.getApellidoPaterno());
-//            usuarioJPA.setApellidoMaterno(usuarioBase.getApellidoMaterno());
-//            usuarioJPA.setEmail(usuarioBase.getEmail());
-//            usuarioJPA.setPassword(usuarioBase.getPassword());
-//            usuarioJPA.setFechaNacimiento(usuarioBase.getFechaNacimiento());
-//            usuarioJPA.setSexo(usuarioBase.getSexo());
-//            usuarioJPA.setTelefono(usuarioBase.getTelefono());
-//            usuarioJPA.setCelular(usuarioBase.getCelular());
-//            usuarioJPA.setCurp(usuarioBase.getCurp());
-//            usuarioJPA.setDireccionesJPA(usuarioBase.getDireccionesJPA());
-//            RolJPA rolJPA = modelMapper.map(usuario.Rol, RolJPA.class);
-//            usuarioJPA.RolJPA = rolJPA;
             entityManager.merge(usuarioBase);
 
             result.correct = true;
