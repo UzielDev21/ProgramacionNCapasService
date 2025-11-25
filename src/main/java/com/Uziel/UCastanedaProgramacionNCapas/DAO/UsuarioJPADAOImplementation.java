@@ -114,8 +114,6 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
 
             usuarioBase.setImagen(imagenBase64);
 
-            entityManager.merge(usuarioBase);
-
             result.correct = true;
         } catch (Exception ex) {
             result.correct = false;

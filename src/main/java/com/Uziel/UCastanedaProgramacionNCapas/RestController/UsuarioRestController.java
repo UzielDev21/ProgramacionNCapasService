@@ -6,8 +6,10 @@ import com.Uziel.UCastanedaProgramacionNCapas.JPA.UsuarioJPA;
 import jakarta.persistence.EntityExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -136,6 +138,34 @@ public class UsuarioRestController {
         return ResponseEntity.status(result.status).body(result);
     }
 
+    
+    @PatchMapping("/imagen/{IdUsuario}")
+    @CrossOrigin(origins = "http://localhost:8081")
+    public ResponseEntity UpdateImagen(@PathVariable("IdUsuario") int IdUsuario, @RequestBody UsuarioJPA usuario){
+        Result result = new Result();
+        
+        try {
+            result = usuarioJPADAOImplementation.UpdateImagenJPA(IdUsuario, usuario.getImagen());
+            
+            if (result.correct) {
+                result.status = 200;
+                return ResponseEntity.status(result.status).body(result);
+            } else {
+                result.status = 400;
+                return ResponseEntity.status(result.status).body(result);
+            }
+            
+        } catch (Exception ex) {
+            result.correct = false;
+            result.errorMessage = ex.getLocalizedMessage();
+            result.ex = ex;
+            result.status = 500;
+        }
+        
+        return ResponseEntity.status(result.status).body(result);
+    }
+    
+    
     @PutMapping
     public ResponseEntity Update(@RequestBody UsuarioJPA usuarioJPA){
         Result result = new Result();
