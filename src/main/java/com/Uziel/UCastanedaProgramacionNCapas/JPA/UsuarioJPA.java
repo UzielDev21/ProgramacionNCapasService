@@ -62,6 +62,9 @@ public class UsuarioJPA {
     @Column(name = "imagenfile")
     @Lob
     private String Imagen;
+    
+    @Column(name = "status")
+    private int Status;
 
     @ManyToOne
     @JoinColumn(name = "idrol")
@@ -194,6 +197,15 @@ public class UsuarioJPA {
     
     public String getImagen(){
         return Imagen;
+    }
+
+
+    public void setStatus(int Status) {
+        this.Status = Status;
+    }
+    
+    public int getStatus() {
+        return Status;
     }
     
     @JsonIgnore 
