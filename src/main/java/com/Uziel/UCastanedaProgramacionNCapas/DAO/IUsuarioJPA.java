@@ -21,4 +21,6 @@ public interface IUsuarioJPA {
     Result BuscarUsuarioJPA(UsuarioJPA usuario);
     
     Result AddAllJPA(List<UsuarioJPA> usuariosJPA);
+    
+    Result ValidarCarga(String nombreArchivo, List<UsuarioJPA> usuariosArchivo);
 }

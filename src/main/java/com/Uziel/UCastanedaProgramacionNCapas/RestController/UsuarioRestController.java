@@ -2,10 +2,18 @@ package com.Uziel.UCastanedaProgramacionNCapas.RestController;
 
 import com.Uziel.UCastanedaProgramacionNCapas.DAO.UsuarioJPADAOImplementation;
 import com.Uziel.UCastanedaProgramacionNCapas.JPA.Result;
+import com.Uziel.UCastanedaProgramacionNCapas.JPA.RolJPA;
 import com.Uziel.UCastanedaProgramacionNCapas.JPA.UsuarioJPA;
 import com.Uziel.UCastanedaProgramacionNCapas.Service.CargaMasivaLogger;
 import com.Uziel.UCastanedaProgramacionNCapas.Service.JwtService;
+import com.Uziel.UCastanedaProgramacionNCapas.Service.TokenService;
 import jakarta.persistence.EntityExistsException;
+import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("usuario")
@@ -32,62 +41,9 @@ public class UsuarioRestController {
     @Autowired
     private CargaMasivaLogger cargaMasivaLogger;
     
-//    @PostMapping("/CargaMasivaProcesar")
-//    public ResponseEntity AddAll(@RequestHeader("Authorization") String authotizarionHeader, 
-//            @RequestBody List<UsuarioJPA> usuarios){
-//        Result result = new Result();
-//        
-//        try {
-//            String token = authotizarionHeader.replace("Bearer ", "").trim();
-//            
-//            if (!jwtService.isTokenValid(token)) {
-//                result.correct = false;
-//                result.errorMessage = "Token Invalido";
-//                result.status = 401;
-//                cargaMasivaLogger.writeLog("cargaMasiva", token, "Error", "");
-//                
-//                return ResponseEntity.status(result.status).body(result);
-//            }
-//            
-//            if (jwtService.isExpired(token)) {
-//                result.correct = false;
-//                result.errorMessage = "Token Expirado";
-//                result.status = 401;
-//                cargaMasivaLogger.writeLog("CargaMasiva", token, "Error", "Token Expirado");
-//
-//                return ResponseEntity.status(result.status).body(result);
-//            }
-//            
-//            Result resultCarga = usuarioJPADAOImplementation.AddAllJPA(usuarios);
-//            
-//            if (!resultCarga.correct) {
-//                result.correct = false;
-//                result.errorMessage = resultCarga.errorMessage;
-//                result.ex = resultCarga.ex;
-//                result.status = 500;
-//                
-//                cargaMasivaLogger.writeLog("cargaMasiva", token, "Error", "Error al insertar usuarios" + resultCarga.errorMessage);
-//                return ResponseEntity.status(result.status).body(result);
-//            }
-//            
-//            result.correct = true;
-//            result.status = 200;
-//            result.objects = (List<Object>)(Object) usuarios;
-//            
-//            cargaMasivaLogger.writeLog("CargaMasiva", token, "Procesado", "");
-//            return ResponseEntity.status(result.status).body(result);
-//        } catch (Exception ex) {
-//            result.correct = false;
-//            result.errorMessage = ex.getLocalizedMessage();
-//            result.ex = ex;
-//            result.status = 500;
-//        }
-//        
-//        return ResponseEntity.status(result.status).body(result);
-//    }
-    
-    
-        
+    @Autowired
+    private TokenService tokenService;
+     
     @GetMapping
     public ResponseEntity GetAll() {
         Result result = new Result();
@@ -255,4 +211,70 @@ public class UsuarioRestController {
         
         return ResponseEntity.status(result.status).body(result);
     }
+
+    @PostMapping("/cargaMasiva/validar")
+    public ResponseEntity ValidarCarga(@RequestParam("file") MultipartFile file){
+        Result result = new Result();
+        String nombreArchivo = null;
+        
+        try {
+            nombreArchivo = LocalDateTime.now()
+                    .format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")) + "CargaMasiva";
+            List<UsuarioJPA> usuariosArchivo = new ArrayList<>();
+            List<String> erroresLocal = new ArrayList<>();
+            
+            if (file.getOriginalFilename().endsWith(".txt")) {
+                String contenido = new String(file.getBytes(), StandardCharsets.UTF_8);
+                String[] lineas = contenido.split("\n");
+                
+                int indice = 1;
+                
+                for (String linea : lineas) {
+                    String [] campos = linea.split("\\|");
+                    
+                    if (campos.length < 13) {
+                        erroresLocal.add("Linea " + indice + ": Formato invalido");
+                    } else {
+                        UsuarioJPA usuario = new UsuarioJPA();
+                        usuario.setUserName(campos[0].trim());
+                        usuario.setNombre(campos[1].trim());
+                        usuario.setApellidoPaterno(campos[2].trim());
+                        usuario.setApellidoMaterno(campos[3].trim());
+                        usuario.setEmail(campos[4].trim());
+                        usuario.setPassword(campos[5].trim());
+                       
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                        String fechaIngresada = campos[6];
+                        Date fechaFormateda = formatter.parse(fechaIngresada);
+                        usuario.setFechaNacimiento(fechaFormateda);
+                        
+                        usuario.setSexo(campos[7].trim());;
+                        usuario.setTelefono(campos[8].trim());;
+                        usuario.setCelular(campos[9].trim());;
+                        usuario.setCurp(campos[10].trim());;
+                        usuario.setStatus(Integer.parseInt(campos[11].trim()));;
+                        
+                        usuario.RolJPA = new RolJPA();
+                        usuario.RolJPA.setIdRol(Integer.parseInt(campos[12].trim()));
+                        
+                        usuariosArchivo.add(usuario);
+                    }
+                    indice++;
+                }
+                
+                
+            } else {
+            }
+            
+        } catch (Exception ex) {
+            result.correct = false;
+            result.errorMessage = ex.getLocalizedMessage();
+            result.ex = ex;
+            result.status = 500;
+        }
+        
+        return ResponseEntity.status(result.status).body(result);
+    }
+
+
 }
