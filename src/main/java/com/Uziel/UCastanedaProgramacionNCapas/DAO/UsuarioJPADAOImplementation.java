@@ -249,7 +249,9 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
                         "ERROR", 
                         "");
                 result.correct = false;
-                result.errorMessage = "El rchivo contiene errores";
+                result.errorMessage = "El archivo contiene errores";
+                result.objects = (List<Object>)(List<?>) errores;
+                result.status = 422;
                 
             } else {
                 String fechaHoraToken = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
@@ -262,6 +264,7 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
                         "");
                 result.correct = true;
                 result.object = token;
+                result.status = 200;
             }
             
         } catch (Exception ex) {
