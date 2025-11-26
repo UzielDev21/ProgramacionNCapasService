@@ -3,7 +3,10 @@ package com.Uziel.UCastanedaProgramacionNCapas.RestController;
 import com.Uziel.UCastanedaProgramacionNCapas.DAO.UsuarioJPADAOImplementation;
 import com.Uziel.UCastanedaProgramacionNCapas.JPA.Result;
 import com.Uziel.UCastanedaProgramacionNCapas.JPA.UsuarioJPA;
+import com.Uziel.UCastanedaProgramacionNCapas.Service.CargaMasivaLogger;
+import com.Uziel.UCastanedaProgramacionNCapas.Service.JwtService;
 import jakarta.persistence.EntityExistsException;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +28,66 @@ public class UsuarioRestController {
 
     @Autowired
     private UsuarioJPADAOImplementation usuarioJPADAOImplementation;
-
+    
+    @Autowired
+    private CargaMasivaLogger cargaMasivaLogger;
+    
+//    @PostMapping("/CargaMasivaProcesar")
+//    public ResponseEntity AddAll(@RequestHeader("Authorization") String authotizarionHeader, 
+//            @RequestBody List<UsuarioJPA> usuarios){
+//        Result result = new Result();
+//        
+//        try {
+//            String token = authotizarionHeader.replace("Bearer ", "").trim();
+//            
+//            if (!jwtService.isTokenValid(token)) {
+//                result.correct = false;
+//                result.errorMessage = "Token Invalido";
+//                result.status = 401;
+//                cargaMasivaLogger.writeLog("cargaMasiva", token, "Error", "");
+//                
+//                return ResponseEntity.status(result.status).body(result);
+//            }
+//            
+//            if (jwtService.isExpired(token)) {
+//                result.correct = false;
+//                result.errorMessage = "Token Expirado";
+//                result.status = 401;
+//                cargaMasivaLogger.writeLog("CargaMasiva", token, "Error", "Token Expirado");
+//
+//                return ResponseEntity.status(result.status).body(result);
+//            }
+//            
+//            Result resultCarga = usuarioJPADAOImplementation.AddAllJPA(usuarios);
+//            
+//            if (!resultCarga.correct) {
+//                result.correct = false;
+//                result.errorMessage = resultCarga.errorMessage;
+//                result.ex = resultCarga.ex;
+//                result.status = 500;
+//                
+//                cargaMasivaLogger.writeLog("cargaMasiva", token, "Error", "Error al insertar usuarios" + resultCarga.errorMessage);
+//                return ResponseEntity.status(result.status).body(result);
+//            }
+//            
+//            result.correct = true;
+//            result.status = 200;
+//            result.objects = (List<Object>)(Object) usuarios;
+//            
+//            cargaMasivaLogger.writeLog("CargaMasiva", token, "Procesado", "");
+//            return ResponseEntity.status(result.status).body(result);
+//        } catch (Exception ex) {
+//            result.correct = false;
+//            result.errorMessage = ex.getLocalizedMessage();
+//            result.ex = ex;
+//            result.status = 500;
+//        }
+//        
+//        return ResponseEntity.status(result.status).body(result);
+//    }
+    
+    
+        
     @GetMapping
     public ResponseEntity GetAll() {
         Result result = new Result();
@@ -137,8 +200,7 @@ public class UsuarioRestController {
 
         return ResponseEntity.status(result.status).body(result);
     }
-
-    
+   
     @PatchMapping("/imagen/{IdUsuario}")
     @CrossOrigin(origins = "http://localhost:8081")
     public ResponseEntity UpdateImagen(@PathVariable("IdUsuario") int IdUsuario, @RequestBody UsuarioJPA usuario){
@@ -164,7 +226,6 @@ public class UsuarioRestController {
         
         return ResponseEntity.status(result.status).body(result);
     }
-    
     
     @PutMapping
     public ResponseEntity Update(@RequestBody UsuarioJPA usuarioJPA){

@@ -7,7 +7,6 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -16,9 +15,6 @@ public class MunicipioJPADAOImplementation implements IMunicipioJPA{
 
     @PersistenceContext
     private EntityManager entityManager;
-    
-    @Autowired
-    private ModelMapper modelMapper;
     
     @Override
     public Result GetByIdEstadoJPA(int IdEstado){
@@ -36,7 +32,6 @@ public class MunicipioJPADAOImplementation implements IMunicipioJPA{
                 result.errorMessage = "No existe el estado con el Id = " + IdEstado;
             } else {
                 result.correct = true;
-//                result.object = municipios;
                 result.objects = (List<Object>)(List<?>) municipios;
             }
             

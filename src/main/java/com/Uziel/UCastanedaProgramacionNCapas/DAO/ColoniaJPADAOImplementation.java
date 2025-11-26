@@ -7,7 +7,6 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -16,9 +15,6 @@ public class ColoniaJPADAOImplementation implements IColoniaJPA{
 
     @PersistenceContext
     private EntityManager entityManager;
-    
-    @Autowired
-    private ModelMapper modelMapper;
 
     @Override
     public Result GetByIdMunicipioJPA(int IdMunicipio) {

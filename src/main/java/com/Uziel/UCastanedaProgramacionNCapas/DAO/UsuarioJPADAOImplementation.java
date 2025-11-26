@@ -5,14 +5,22 @@ import com.Uziel.UCastanedaProgramacionNCapas.JPA.ColoniaJPA;
 import com.Uziel.UCastanedaProgramacionNCapas.JPA.RolJPA;
 import com.Uziel.UCastanedaProgramacionNCapas.JPA.UsuarioJPA;
 import com.Uziel.UCastanedaProgramacionNCapas.JPA.Result;
+import com.Uziel.UCastanedaProgramacionNCapas.Service.CargaMasivaLogger;
+import com.Uziel.UCastanedaProgramacionNCapas.Service.JwtService;
+import com.Uziel.UCastanedaProgramacionNCapas.Service.TokenService;
+import io.jsonwebtoken.Claims;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +32,10 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
     private EntityManager entityManager;
     
     @Autowired
-    private ModelMapper modelMapper;
+    private TokenService tokenService;
+    
+    @Autowired
+    private CargaMasivaLogger cargaMasivaLogger;
     
     @Override
     public Result GetAllJPA() {
@@ -34,7 +45,6 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
             TypedQuery<UsuarioJPA> queryUsuario = entityManager.createQuery("FROM UsuarioJPA", UsuarioJPA.class);
             List<UsuarioJPA> usuariosJPA = queryUsuario.getResultList();
 
-//            result.object = usuariosJPA;
             result.objects = (List<Object>) (List<?>) usuariosJPA;
             result.correct = true;
             
@@ -73,8 +83,7 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
         
         try {
             
-            UsuarioJPA usuarioPutJPA = entityManager.find(UsuarioJPA.class, usuario.getIdUsuario());
-//            
+            UsuarioJPA usuarioPutJPA = entityManager.find(UsuarioJPA.class, usuario.getIdUsuario());           
             if (usuarioPutJPA == null) {
                 if (usuario.DireccionesJPA != null || usuario.DireccionesJPA.isEmpty()) {
                     entityManager.persist(usuario);
@@ -179,27 +188,31 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
         return result;
     }
     
+    
+    @Transactional
+    public Result ProcesarCarga(String token){
+        Result result = new Result();
+        
+        
+        
+        return result;
+    }
+    
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result AddAllJPA(List<UsuarioJPA> usuariosJPA) {
         Result result = new Result();
         
         try {
-
-//            for (Usuario usuario : usuarios) {
-//                
-//                UsuarioJPA usuarioJPA = modelMapper.map(usuario, UsuarioJPA.class);
-//                usuarioJPA.RolJPA = modelMapper.map(usuario.Rol, RolJPA.class);
-//                entityManager.persist(usuarioJPA);
-//                
-//            }
+            for (UsuarioJPA usuario : usuariosJPA) {
+                entityManager.persist(usuario);
+            }
             result.correct = true;
         } catch (Exception ex) {
             result.correct = false;
             result.errorMessage = ex.getLocalizedMessage();
             result.ex = ex;
         }
-        
         return result;
     }
     
