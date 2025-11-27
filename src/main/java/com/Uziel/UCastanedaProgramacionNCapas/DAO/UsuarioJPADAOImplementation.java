@@ -265,7 +265,7 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
                 String fechaHoraToken = fechaHoraValidacion.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
                 String inputToken = nombreArchivo + "|" + fechaHoraToken + "|" + UUID.randomUUID();
                 String token = tokenService.generateSha256(inputToken);
-                
+
                 tokenCacheService.guardarToken(token,
                         nombreArchivo,
                         usuariosArchivo,
@@ -290,7 +290,7 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Result ProcesarCargaMasiva( String token) {
+    public Result ProcesarCargaMasiva(String token) {
         Result result = new Result();
 
         try {
@@ -400,6 +400,15 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
                 }
             }
 
+            if (usuario.getStatus() == 0 || usuario.getStatus() == 1) {
+                if (!filtro) {
+                    queryValidar = queryValidar + " WHERE usuarioJPA.Status = :status";
+                    filtro = true;
+                } else {
+                    queryValidar = queryValidar + " AND usuarioJPA.Status = :status";
+                }
+            }
+
             queryValidar = queryValidar + " ORDER BY usuarioJPA.IdUsuario";
 
             TypedQuery<UsuarioJPA> queryBuscar = entityManager.createQuery(queryValidar, UsuarioJPA.class);
@@ -415,8 +424,13 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
             if (usuario.getApellidoMaterno() != null && !usuario.getApellidoMaterno().isEmpty()) {
                 queryBuscar.setParameter("apellidoMaterno", "%" + usuario.getApellidoMaterno() + "%");
             }
+
             if (usuario.RolJPA != null && usuario.RolJPA.getIdRol() > 0) {
                 queryBuscar.setParameter("idRol", usuario.RolJPA.getIdRol());
+            }
+
+            if (usuario.getStatus() == 0 || usuario.getStatus() == 1) {
+                queryBuscar.setParameter("status", usuario.getStatus());
             }
 
             List<UsuarioJPA> usuariosJPA = queryBuscar.getResultList();
