@@ -23,4 +23,6 @@ public interface IUsuarioJPA {
     Result AddAllJPA(List<UsuarioJPA> usuariosJPA);
     
     Result ValidarCarga(String nombreArchivo, List<UsuarioJPA> usuariosArchivo);
+    
+    Result ProcesarCargaMasiva(String token);
 }

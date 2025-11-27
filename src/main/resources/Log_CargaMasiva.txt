@@ -7,5 +7,10 @@
 20251126120127CargaMasiva | null | Error | 2025-11-26 12:01:39 | 
 20251126120127CargaMasiva | null | ERROR | 2025-11-26 12:02:03 | 
 20251126120223CargaMasiva | null | Error | 2025-11-26 12:15:24 | 
-20251126121824CargaMasiva | 42cf0111b00c169f2933899c9cc251d369adac23d7d93d65a1b2cdd07152448a | Valido | 2025-11-26 12:20:06 | 
-20251126122050CargaMasiva | ccd11df42e68f43cf5b3fce2473a8d7be9c54b318202d540fe0d8584cdc4608e | Valido | 2025-11-26 12:21:04 | 
+20251126165449CargaMasiva | 8ab36db52b8d335a7026c4e0fe5086fffe5c0ba6edae15aeee4ce9a131df8f55 | Valido | 2025-11-26 16:55:24 | 
+20251126165449CargaMasiva | 8ab36db52b8d335a7026c4e0fe5086fffe5c0ba6edae15aeee4ce9a131df8f55 | ERROR | 2025-11-26 17:00:13 | Token no encontrado o asociado a una validación previa
+20251126165449CargaMasiva | 8ab36db52b8d335a7026c4e0fe5086fffe5c0ba6edae15aeee4ce9a131df8f55 | ERROR | 2025-11-26 17:46:05 | Token no encontrado o asociado a una validación previa
+20251126174557CargaMasiva | 8dbf68ccb3472126ad0db6c3089d91fecef904bc7b55924dfdf62bc4e0e0642e | Valido | 2025-11-26 17:46:08 | 
+20251126165449CargaMasiva | 8dbf68ccb3472126ad0db6c3089d91fecef904bc7b55924dfdf62bc4e0e0642e | ERROR | 2025-11-26 17:51:33 | Token no encontrado o asociado a una validación previa
+20251126175237CargaMasiva | cd0596e15ec4e897ba72f4367ca37c3cda36343fca979acb1ded2baa1afa1e60 | Valido | 2025-11-26 17:52:54 | 
+20251126190549CargaMasiva | 01b9dbf8b2118d0d01701d1380e5f54d46240dff30b99f22a9a5ea2db3cd2bb3 | Valido | 2025-11-26 19:07:21 | 

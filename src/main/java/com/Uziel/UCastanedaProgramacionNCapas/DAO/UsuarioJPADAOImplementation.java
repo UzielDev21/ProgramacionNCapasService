@@ -7,6 +7,7 @@ import com.Uziel.UCastanedaProgramacionNCapas.JPA.UsuarioJPA;
 import com.Uziel.UCastanedaProgramacionNCapas.JPA.Result;
 import com.Uziel.UCastanedaProgramacionNCapas.Service.CargaMasivaLogger;
 import com.Uziel.UCastanedaProgramacionNCapas.Service.JwtService;
+import com.Uziel.UCastanedaProgramacionNCapas.Service.TokenCacheService;
 import com.Uziel.UCastanedaProgramacionNCapas.Service.TokenService;
 import io.jsonwebtoken.Claims;
 import jakarta.persistence.EntityExistsException;
@@ -20,9 +21,12 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -39,6 +43,9 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
 
     @Autowired
     private CargaMasivaLogger cargaMasivaLogger;
+
+    @Autowired
+    private TokenCacheService tokenCacheService;
 
     @Override
     public Result GetAllJPA() {
@@ -213,7 +220,7 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
     public Result ValidarCarga(String nombreArchivo, List<UsuarioJPA> usuariosArchivo) {
         Result result = new Result();
         List<String> errores = new ArrayList<>();
-        
+
         try {
             if (usuariosArchivo == null || usuariosArchivo.isEmpty()) {
                 errores.add("El archivo no contiene datos");
@@ -221,57 +228,131 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
                 int indice = 1;
                 for (UsuarioJPA usuario : usuariosArchivo) {
                     if (usuario.getUserName() == null || usuario.getUserName().isBlank()) {
-                        errores.add("Linea: " + indice + "UserName es obligatorio");
+                        errores.add("Linea " + indice + ": UserName es obligatorio");
                     }
-                    
-                    if (usuario.getNombre()== null || usuario.getNombre().isBlank()) {
-                        errores.add("Linea: " + indice + "Nombre es obligatorio");
+
+                    if (usuario.getNombre() == null || usuario.getNombre().isBlank()) {
+                        errores.add("Linea " + indice + ": Nombre es obligatorio");
                     }
-                    
-                    if (usuario.getApellidoPaterno()== null || usuario.getApellidoPaterno().isBlank()) {
-                        errores.add("Linea: " + indice + "ApellidoPaterno es obligatorio");
+
+                    if (usuario.getApellidoPaterno() == null || usuario.getApellidoPaterno().isBlank()) {
+                        errores.add("Linea " + indice + ": ApellidoPaterno es obligatorio");
                     }
-                    
-                    if (usuario.getEmail()== null || usuario.getEmail().isBlank()) {
-                        errores.add("Linea: " + indice + "Email es obligatorio");
+
+                    if (usuario.getEmail() == null || usuario.getEmail().isBlank()) {
+                        errores.add("Linea " + indice + ": Email es obligatorio");
                     }
-                    
-                    if (usuario.getFechaNacimiento()== null) {
-                        errores.add("Linea: " + indice + "Nombre es obligatorio");
+
+                    if (usuario.getFechaNacimiento() == null) {
+                        errores.add("Linea " + indice + ": Nombre es obligatorio");
                     }
                     indice++;
                 }
             }
-            
+
             if (!errores.isEmpty()) {
                 cargaMasivaLogger.writeLog(nombreArchivo,
-                        null, 
-                        "ERROR", 
+                        null,
+                        "ERROR",
                         "");
                 result.correct = false;
                 result.errorMessage = "El archivo contiene errores";
-                result.objects = (List<Object>)(List<?>) errores;
+                result.objects = (List<Object>) (List<?>) errores;
                 result.status = 422;
-                
+
             } else {
-                String fechaHoraToken = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                LocalDateTime fechaHoraValidacion = LocalDateTime.now();
+                String fechaHoraToken = fechaHoraValidacion.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
                 String inputToken = nombreArchivo + "|" + fechaHoraToken + "|" + UUID.randomUUID();
                 String token = tokenService.generateSha256(inputToken);
                 
-                cargaMasivaLogger.writeLog(nombreArchivo, 
-                        token, 
-                        "Valido", 
+                tokenCacheService.guardarToken(token,
+                        nombreArchivo,
+                        usuariosArchivo,
+                        fechaHoraValidacion);
+
+                cargaMasivaLogger.writeLog(nombreArchivo,
+                        token,
+                        "Valido",
                         "");
                 result.correct = true;
                 result.object = token;
                 result.status = 200;
             }
-            
+
         } catch (Exception ex) {
             result.correct = false;
             result.errorMessage = ex.getLocalizedMessage();
             result.ex = ex;
         }
+        return result;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Result ProcesarCargaMasiva( String token) {
+        Result result = new Result();
+
+        try {
+//            
+//            LocalDateTime fechaValidacion = tokenCacheService.obtenerFechaValidacion(token);
+//            String nombreArchivoAsociado = tokenCacheService.obtenerNombreArchivo(token);
+//            List<UsuarioJPA> usuariosArchivo = tokenCacheService.obtenerUsuarios(token);
+//            
+//            if (fechaValidacion == null || nombreArchivoAsociado == null) {
+//                cargaMasivaLogger.writeLog(nombreArchivo == null ? "DESCONOCIDO" : nombreArchivo,
+//                        token,
+//                        "ERROR",
+//                        "Token no encontrado o asociado a una validación previa");
+//                result.correct = false;
+//                result.errorMessage = "Token no valido, Vuelva a validar el archivo";
+//                result.status = 400;
+//                return result;
+//            }
+//
+//            if (!nombreArchivoAsociado.equals(nombreArchivo)) {
+//                cargaMasivaLogger.writeLog(nombreArchivo,
+//                        token,
+//                        "ERROR",
+//                        "El token no corresponde al archivo proporcionado");
+//                result.correct = false;
+//                result.errorMessage = "El token no corresponde al archivo";
+//                result.status = 400;
+//                return result;
+//            }
+//
+//            LocalDateTime ahora = LocalDateTime.now();
+//            long minutosTranscurridos = Duration.between(fechaValidacion, ahora).toMinutes();
+//
+//            if (minutosTranscurridos > 2) {
+//                cargaMasivaLogger.writeLog(nombreArchivo,
+//                        token,
+//                        "ERROR",
+//                        "Tiempo Expirado");
+//
+//                result.correct = false;
+//                result.errorMessage = "Tiempo expirado, vuelva a validar el archivo";
+//                result.status = 400;
+//                return result;
+//            }
+//
+//            List<UsuarioJPA> usuariosArchivo = tokenCacheService.obtenerUsuarios(token);
+//            for (UsuarioJPA usuarioJPA : usuariosArchivo) {
+//                entityManager.persist(usuarioJPA);
+//            }
+//
+//            cargaMasivaLogger.writeLog(nombreArchivo,
+//                    token, "PROCESADO", "Todo ok");
+//
+//            result.correct = true;
+//            result.status = 200;
+
+        } catch (Exception ex) {
+            result.correct = false;
+            result.errorMessage = ex.getLocalizedMessage();
+            result.ex = ex;
+        }
+
         return result;
     }
 
@@ -350,5 +431,4 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
 
         return result;
     }
-
 }

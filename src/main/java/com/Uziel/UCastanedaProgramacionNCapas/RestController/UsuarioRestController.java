@@ -6,6 +6,7 @@ import com.Uziel.UCastanedaProgramacionNCapas.JPA.RolJPA;
 import com.Uziel.UCastanedaProgramacionNCapas.JPA.UsuarioJPA;
 import com.Uziel.UCastanedaProgramacionNCapas.Service.CargaMasivaLogger;
 import com.Uziel.UCastanedaProgramacionNCapas.Service.JwtService;
+import com.Uziel.UCastanedaProgramacionNCapas.Service.TokenCacheService;
 import com.Uziel.UCastanedaProgramacionNCapas.Service.TokenService;
 import jakarta.persistence.EntityExistsException;
 import java.io.FileInputStream;
@@ -50,6 +51,9 @@ public class UsuarioRestController {
 
     @Autowired
     private TokenService tokenService;
+    
+    @Autowired
+    private TokenCacheService tokenCacheService; 
 
     @GetMapping
     public ResponseEntity GetAll() {
@@ -329,4 +333,28 @@ public class UsuarioRestController {
         return ResponseEntity.status(result.status).body(result);
     }
 
+    
+    @PostMapping("/cargaMasiva/procesar")
+    public ResponseEntity ProcesarCarga(@RequestParam("token") String token){
+        Result result = new Result();
+        
+        try {
+            
+//            result = usuarioJPADAOImplementation.ProcesarCargaMasiva( token);
+            
+            if (result.correct) {
+                result.status = 200;
+            }else{
+                result.status = 400;
+            }
+            
+        } catch (Exception ex) {
+            result.correct =false;
+            result.errorMessage = ex.getLocalizedMessage();
+            result.ex = ex;
+            result.status = 500;
+        }
+        
+        return ResponseEntity.status(result.status).body(result);
+    }
 }
