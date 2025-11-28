@@ -8,6 +8,8 @@ import io.jsonwebtoken.security.Keys;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,15 +19,19 @@ public class JwtService {
             "90f3f5955e2a39143603a240edf662c71de1b17d830af81ec09bd0c873003583";
     
     private Key getSigningKey(){
-        byte[] keyBytes = SECRET_KEY.getBytes(StandardCharsets.UTF_8);
-        return Keys.hmacShaKeyFor(keyBytes);
+        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
     }
     
-    public String generateToken(String nombreArchivo){
+    public String GenerateUserToken(String username, int idUsuario, String rol){
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("idUsuario", idUsuario);
+        claims.put("rol", rol);
+        
         return Jwts.builder()
-                .setSubject(nombreArchivo)
+                .setClaims(claims)
+                .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 2))
+                .setExpiration(new Date (System.currentTimeMillis() + 1000 * 60 * 60))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -37,11 +43,33 @@ public class JwtService {
                     .build()
                     .parseClaimsJws(token);
             return true;
-        }catch(ExpiredJwtException ex){
-            return false;
         }catch (Exception ex) {
             return false;
         }
+    }
+    
+    public Claims getAllClaims(String token){
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(getSigningKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (ExpiredJwtException ex) {
+            return ex.getClaims();
+        }
+    }
+    
+    public String GetUsernameFromToken(String token){
+        return getAllClaims(token).getSubject();
+    }
+    
+    public int getIdUsuarioFromToken(String token){
+        return (int) getAllClaims(token).get("idUsuario");
+    }
+    
+    public String getRolFromToken(String token){
+        return (String) getAllClaims(token).get("rol");
     }
     
     public boolean isExpired(String token){

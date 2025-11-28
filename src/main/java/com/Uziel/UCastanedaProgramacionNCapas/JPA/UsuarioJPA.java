@@ -27,7 +27,7 @@ public class UsuarioJPA {
     private int IdUsuario;
     
     @Column(name = "username")
-    private String UserName;
+    private String userName;
     
     @Column(name = "nombre")
     private String Nombre;
@@ -42,7 +42,7 @@ public class UsuarioJPA {
     private String Email;
 
     @Column(name = "password")
-    private String Password;
+    private String password;
 
     @Column(name = "fechanacimiento")
     private Date FechaNacimiento;
@@ -78,15 +78,15 @@ public class UsuarioJPA {
     public UsuarioJPA() {
     }
 
-    public UsuarioJPA(int IdUsuario, String UserName, String Nombre, String ApellidoPaterno, String ApellidoMaterno, String Email,
-            String Password, Date FechaNacimiento, String Sexo, String Telefono, String Celular, String Curp, String Imagen) {
+    public UsuarioJPA(int IdUsuario, String userName, String Nombre, String ApellidoPaterno, String ApellidoMaterno, String Email,
+            String password, Date FechaNacimiento, String Sexo, String Telefono, String Celular, String Curp, String Imagen) {
         this.IdUsuario = IdUsuario;
-        this.UserName = UserName;
+        this.userName = userName;
         this.Nombre = Nombre;
         this.ApellidoPaterno = ApellidoPaterno;
         this.ApellidoMaterno = ApellidoMaterno;
         this.Email = Email;
-        this.Password = Password;
+        this.password = password;
         this.FechaNacimiento = FechaNacimiento;
         this.Sexo = Sexo;
         this.Telefono = Telefono;
@@ -103,12 +103,12 @@ public class UsuarioJPA {
         return IdUsuario;
     }
     
-    public void setUserName(String UserName){
-        this.UserName = UserName;
+    public void setUserName(String userName){
+        this.userName = userName;
     }
     
     public String getUserName(){
-        return UserName;
+        return userName;
     }
 
     public void setNombre(String Nombre) {
@@ -143,12 +143,12 @@ public class UsuarioJPA {
         return Email;
     }
 
-    public void setPassword(String Password) {
-        this.Password = Password;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getPassword() {
-        return Password;
+        return password;
     }
 
     public void setFechaNacimiento(Date FechaNacimiento) {
