@@ -1,6 +1,7 @@
 package com.Uziel.UCastanedaProgramacionNCapas.Configuration;
 
 import com.Uziel.UCastanedaProgramacionNCapas.Service.JwtService;
+import com.Uziel.UCastanedaProgramacionNCapas.Service.TokenListaNegraService;
 import com.Uziel.UCastanedaProgramacionNCapas.Service.UserDetailsJPAService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,10 +22,14 @@ public class SpringSecurityConfiguration {
     
     private final UserDetailsJPAService userDetailsJPAService;
     private final JwtService jwtService;
+    private final TokenListaNegraService tokenListaNegraService;
     
-    public SpringSecurityConfiguration(UserDetailsJPAService userDetailsJPAService, JwtService jwtService){
+    public SpringSecurityConfiguration(UserDetailsJPAService userDetailsJPAService, 
+            JwtService jwtService,
+            TokenListaNegraService tokenListaNegraService){
         this.userDetailsJPAService = userDetailsJPAService;
         this.jwtService = jwtService;
+        this.tokenListaNegraService = tokenListaNegraService;
     }
     
     @Bean
@@ -33,6 +38,7 @@ public class SpringSecurityConfiguration {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/Login").permitAll()
+                        .requestMatchers("/api/Logout").authenticated()
                         .requestMatchers("/UsuarioIndex/**")
                         .hasAnyRole("Administrador", "Gerente", "Lider", "Colaborador", "Tercero")
                         .anyRequest().authenticated()
@@ -59,7 +65,7 @@ public class SpringSecurityConfiguration {
     
     @Bean
     public JwtAuthFilter jwtAuthFilter(){
-        return new JwtAuthFilter(jwtService, userDetailsJPAService);
+        return new JwtAuthFilter(jwtService, userDetailsJPAService, tokenListaNegraService);
     }
     
     
