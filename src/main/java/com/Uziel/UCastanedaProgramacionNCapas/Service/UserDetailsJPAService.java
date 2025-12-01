@@ -24,7 +24,6 @@ public class UserDetailsJPAService implements UserDetailsService {
         
         int userStatus = usuario.getStatus();
 
-//        boolean isEnable = (userStatus == 1);
         boolean isDisable = (userStatus == 0);
         
         return User.withUsername(usuario.getUserName())

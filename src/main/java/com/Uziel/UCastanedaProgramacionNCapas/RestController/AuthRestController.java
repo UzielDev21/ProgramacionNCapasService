@@ -5,13 +5,11 @@ import com.Uziel.UCastanedaProgramacionNCapas.JPA.Result;
 import com.Uziel.UCastanedaProgramacionNCapas.JPA.UsuarioJPA;
 import com.Uziel.UCastanedaProgramacionNCapas.Service.JwtService;
 import com.Uziel.UCastanedaProgramacionNCapas.Service.TokenListaNegraService;
-import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -104,7 +102,7 @@ public class AuthRestController {
             String token = authHeader.substring(7);
             tokenListaNegraService.agregarListaNegra(token);
             SecurityContextHolder.clearContext();
-            
+
             result.correct = true;
             result.status = 200;
             result.object = "Logout Exitoso";
