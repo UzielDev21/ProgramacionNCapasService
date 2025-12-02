@@ -6,16 +6,18 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TokenListaNegraService {
+public class TokenListaNegraService implements ITokenInvalidationService{
     
     private final Set<String> listaNegra = ConcurrentHashMap.newKeySet();
     
-    public void agregarListaNegra(String jti){
+    @Override
+    public void invalidateToken(String jti){
         listaNegra.add(jti);
-        System.out.println("Token agregado correctamente " + jti);
+        System.out.println("Token Invalidado Correctamente " + jti);
     }
     
-    public boolean isBlackListed(String jti){
+    @Override
+    public boolean isTokenInvalid(String jti){
         return listaNegra.contains(jti);
     }
 

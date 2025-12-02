@@ -56,18 +56,18 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         
         Claims claims = jwtService.getAllClaims(token);
         String username = claims.getSubject();
-        String rol = (String) claims.get("rol");
-        int idUsuario = (int) claims.get("idUsuario");
+//        String rol = (String) claims.get("rol");
+//        int idUsuario = (int) claims.get("idUsuario");
         String jti = claims.getId();
         
-        if (tokenListaNegraService.isBlackListed(jti)) {
+        if (tokenListaNegraService.isTokenInvalid(jti)) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token inhabilitado por logout");
             System.out.println("Token inhabilitado por Logout: " + jti);
             return;
         }
         
         if (jwtTokenUsoService.excedioLimite(jti)) {
-            jwtTokenUsoService.eliminarToken(jti);
+            tokenListaNegraService.invalidateToken(jti);
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token expirado por limite de uso. vuelve a iniciar sesión");
             return;
         }

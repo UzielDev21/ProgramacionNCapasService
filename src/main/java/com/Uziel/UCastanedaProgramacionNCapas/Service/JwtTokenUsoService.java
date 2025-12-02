@@ -7,29 +7,28 @@ import org.springframework.stereotype.Service;
 @Service
 public class JwtTokenUsoService {
 
-    private final Map<String, Integer> tokenUsoMap = new ConcurrentHashMap<>();
+    private final Map<String, Integer> tokenUsos = new ConcurrentHashMap<>();
     private static final int LIMITE_USO = 5;
 
     public void registrarUso(String jti) {
-        Integer ususActuales = tokenUsoMap.get(jti);
+        Integer ususActuales = tokenUsos.get(jti);
 
         if (ususActuales == null) {
-            tokenUsoMap.put(jti, 1);
+            tokenUsos.put(jti, 1);
         } else {
-            tokenUsoMap.put(jti, ususActuales + 1);
+            tokenUsos.put(jti, ususActuales + 1);
         }
         
-        System.out.println("uso registrado: " + jti + " total usos: " + tokenUsoMap.get(jti));
+        System.out.println("uso registrado: " + jti + " total usos: " + tokenUsos.get(jti));
 
     }
     
     public boolean excedioLimite(String jti){
-        int usos = tokenUsoMap.getOrDefault(jti, 0);
-        return usos >= LIMITE_USO;
+        return tokenUsos.getOrDefault(jti, 0) >= LIMITE_USO;
     }
     
-    public void eliminarToken(String jti){
-        tokenUsoMap.remove(jti);
-    }
+//    public void eliminarToken(String jti){
+//        tokenUsoMap.remove(jti);
+//    }
 
 }

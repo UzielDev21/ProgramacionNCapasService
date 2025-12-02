@@ -102,7 +102,7 @@ public class AuthRestController {
             String token = authHeader.substring(7);
             String jti = jwtService.getAllClaims(token).getId();
             
-            tokenListaNegraService.agregarListaNegra(jti);
+            tokenListaNegraService.invalidateToken(jti);
             SecurityContextHolder.clearContext();
 
             result.correct = true;
