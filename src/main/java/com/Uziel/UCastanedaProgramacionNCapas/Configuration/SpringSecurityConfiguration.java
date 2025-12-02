@@ -1,6 +1,7 @@
 package com.Uziel.UCastanedaProgramacionNCapas.Configuration;
 
 import com.Uziel.UCastanedaProgramacionNCapas.Service.JwtService;
+import com.Uziel.UCastanedaProgramacionNCapas.Service.JwtTokenUsoService;
 import com.Uziel.UCastanedaProgramacionNCapas.Service.TokenListaNegraService;
 import com.Uziel.UCastanedaProgramacionNCapas.Service.UserDetailsJPAService;
 import org.springframework.context.annotation.Bean;
@@ -23,13 +24,16 @@ public class SpringSecurityConfiguration {
     private final UserDetailsJPAService userDetailsJPAService;
     private final JwtService jwtService;
     private final TokenListaNegraService tokenListaNegraService;
+    private final JwtTokenUsoService jwtTokenUsoService;
     
     public SpringSecurityConfiguration(UserDetailsJPAService userDetailsJPAService, 
             JwtService jwtService,
-            TokenListaNegraService tokenListaNegraService){
+            TokenListaNegraService tokenListaNegraService,
+            JwtTokenUsoService jwtTokenUsoService){
         this.userDetailsJPAService = userDetailsJPAService;
         this.jwtService = jwtService;
         this.tokenListaNegraService = tokenListaNegraService;
+        this.jwtTokenUsoService = jwtTokenUsoService;
     }
     
     @Bean
@@ -65,7 +69,7 @@ public class SpringSecurityConfiguration {
     
     @Bean
     public JwtAuthFilter jwtAuthFilter(){
-        return new JwtAuthFilter(jwtService, userDetailsJPAService, tokenListaNegraService);
+        return new JwtAuthFilter(jwtService, userDetailsJPAService, tokenListaNegraService, jwtTokenUsoService);
     }
     
     

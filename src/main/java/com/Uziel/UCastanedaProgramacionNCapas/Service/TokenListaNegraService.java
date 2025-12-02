@@ -10,13 +10,13 @@ public class TokenListaNegraService {
     
     private final Set<String> listaNegra = ConcurrentHashMap.newKeySet();
     
-    public void agregarListaNegra(String token){
-        listaNegra.add(token);
-        System.out.println("Token agregado correctamente " + token);
+    public void agregarListaNegra(String jti){
+        listaNegra.add(jti);
+        System.out.println("Token agregado correctamente " + jti);
     }
     
-    public boolean isBlackListed(String token){
-        return listaNegra.contains(token);
+    public boolean isBlackListed(String jti){
+        return listaNegra.contains(jti);
     }
 
 }

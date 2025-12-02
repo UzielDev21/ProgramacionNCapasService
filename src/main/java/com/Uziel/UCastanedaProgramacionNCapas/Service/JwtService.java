@@ -10,6 +10,7 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,6 +31,7 @@ public class JwtService {
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(username)
+                .setId(UUID.randomUUID().toString())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date (System.currentTimeMillis() + 1000 * 60 * 60))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
@@ -47,6 +49,8 @@ public class JwtService {
             return false;
         }
     }
+    
+    
     
     public Claims getAllClaims(String token){
         try {
@@ -83,6 +87,10 @@ public class JwtService {
         } catch (Exception e) {
             return true;
         }
+    }
+    
+    public String getJtiFromToken(String token){
+        return getAllClaims(token).getId();
     }
     
 }
