@@ -27,8 +27,4 @@ public class JwtTokenUsoService {
         return tokenUsos.getOrDefault(jti, 0) >= LIMITE_USO;
     }
     
-//    public void eliminarToken(String jti){
-//        tokenUsoMap.remove(jti);
-//    }
-
 }

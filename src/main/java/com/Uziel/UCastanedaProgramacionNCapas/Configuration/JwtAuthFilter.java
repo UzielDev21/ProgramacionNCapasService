@@ -56,8 +56,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         
         Claims claims = jwtService.getAllClaims(token);
         String username = claims.getSubject();
-//        String rol = (String) claims.get("rol");
-//        int idUsuario = (int) claims.get("idUsuario");
         String jti = claims.getId();
         
         if (tokenListaNegraService.isTokenInvalid(jti)) {
