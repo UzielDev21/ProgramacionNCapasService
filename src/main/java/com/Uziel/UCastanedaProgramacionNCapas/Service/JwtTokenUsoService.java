@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 public class JwtTokenUsoService {
 
     private final Map<String, Integer> tokenUsos = new ConcurrentHashMap<>();
-    private static final int LIMITE_USO = 5;
+    private static final int LIMITE_USO = 15;
 
     public void registrarUso(String jti) {
         Integer ususActuales = tokenUsos.get(jti);

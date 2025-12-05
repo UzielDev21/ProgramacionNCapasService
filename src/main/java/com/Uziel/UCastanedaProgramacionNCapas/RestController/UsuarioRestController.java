@@ -51,9 +51,9 @@ public class UsuarioRestController {
 
     @Autowired
     private TokenService tokenService;
-    
+
     @Autowired
-    private TokenCacheService tokenCacheService; 
+    private TokenCacheService tokenCacheService;
 
     @GetMapping
     public ResponseEntity GetAll() {
@@ -303,7 +303,7 @@ public class UsuarioRestController {
 
                         usuario.RolJPA = new RolJPA();
                         usuario.RolJPA.setIdRol((int) row.getCell(12).getNumericCellValue());
-                        
+
                         usuariosArchivo.add(usuario);
                         indice++;
                     }
@@ -333,28 +333,26 @@ public class UsuarioRestController {
         return ResponseEntity.status(result.status).body(result);
     }
 
-    
     @PostMapping("/cargaMasiva/procesar")
-    public ResponseEntity ProcesarCarga(@RequestParam("token") String token){
+    public ResponseEntity ProcesarCarga(@RequestParam("token") String token) {
         Result result = new Result();
-        
+
         try {
-            
+
 //            result = usuarioJPADAOImplementation.ProcesarCargaMasiva( token);
-            
             if (result.correct) {
                 result.status = 200;
-            }else{
+            } else {
                 result.status = 400;
             }
-            
+
         } catch (Exception ex) {
-            result.correct =false;
+            result.correct = false;
             result.errorMessage = ex.getLocalizedMessage();
             result.ex = ex;
             result.status = 500;
         }
-        
+
         return ResponseEntity.status(result.status).body(result);
     }
 }
