@@ -169,7 +169,6 @@ public class UsuarioRestController {
     }
 
     @PatchMapping("/imagen/{IdUsuario}")
-    @CrossOrigin(origins = "http://localhost:8081")
     public ResponseEntity UpdateImagen(@PathVariable("IdUsuario") int IdUsuario, @RequestBody UsuarioJPA usuario) {
         Result result = new Result();
 

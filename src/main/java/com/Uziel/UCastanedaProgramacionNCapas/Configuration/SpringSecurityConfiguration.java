@@ -31,10 +31,10 @@ public class SpringSecurityConfiguration {
     private final TokenListaNegraService tokenListaNegraService;
     private final JwtTokenUsoService jwtTokenUsoService;
     
-    public SpringSecurityConfiguration(UserDetailsJPAService userDetailsJPAService, 
+    public SpringSecurityConfiguration(UserDetailsJPAService userDetailsJPAService,
             JwtService jwtService,
             TokenListaNegraService tokenListaNegraService,
-            JwtTokenUsoService jwtTokenUsoService){
+            JwtTokenUsoService jwtTokenUsoService) {
         this.userDetailsJPAService = userDetailsJPAService;
         this.jwtService = jwtService;
         this.tokenListaNegraService = tokenListaNegraService;
@@ -42,31 +42,29 @@ public class SpringSecurityConfiguration {
     }
     
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        http.csrf( csrf -> csrf.disable())
-                .cors(Customizer.withDefaults())
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/Login").permitAll()
-                        .requestMatchers("/api/Logout").authenticated()
-                        .requestMatchers("/UsuarioIndex/**")
-                        .hasAnyRole("Administrador", "Gerente", "Lider", "Colaborador", "Tercero")
-                        .anyRequest().authenticated()
+                .requestMatchers("/api/Login").permitAll()
+                .requestMatchers("/api/Logout").authenticated()
+                .requestMatchers("/UsuarioIndex/**")
+                .hasAnyRole("Administrador", "Gerente", "Lider", "Colaborador", "Tercero")
+                .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsJPAService)
                 .addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
     
-    
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
     
-    
     @Bean
-    public AuthenticationManager authenticationManager(){
+    public AuthenticationManager authenticationManager() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailsJPAService);
         provider.setPasswordEncoder(passwordEncoder());
@@ -74,12 +72,12 @@ public class SpringSecurityConfiguration {
     }
     
     @Bean
-    public JwtAuthFilter jwtAuthFilter(){
+    public JwtAuthFilter jwtAuthFilter() {
         return new JwtAuthFilter(jwtService, userDetailsJPAService, tokenListaNegraService, jwtTokenUsoService);
     }
     
     @Bean
-    public CorsConfigurationSource corsConfigurationSource(){
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         
         corsConfiguration.setAllowedOrigins(List.of("http://localhost:8081"));
@@ -87,11 +85,10 @@ public class SpringSecurityConfiguration {
         corsConfiguration.setAllowedHeaders(List.of("*"));
         corsConfiguration.setExposedHeaders(List.of("Authorization"));
         corsConfiguration.setAllowCredentials(true);
-       
+        
         UrlBasedCorsConfigurationSource corsSource = new UrlBasedCorsConfigurationSource();
         corsSource.registerCorsConfiguration("/**", corsConfiguration);
         return corsSource;
     }
-    
     
 }

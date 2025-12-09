@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("estados")
-@CrossOrigin(origins = "http://localhost:8081/")
 public class EstadoRestController {
     
     @Autowired

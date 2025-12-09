@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("municipios")
-@CrossOrigin(origins = "http://localhost:8081/")
 public class MunicipioRestController {
     
     @Autowired
