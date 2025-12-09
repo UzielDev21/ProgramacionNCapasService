@@ -22,8 +22,11 @@ public class UserDetailsJPAService implements UserDetailsService {
 
         UsuarioJPA usuario = iUsuarioRepositoryDAO.findByUserName(username);
         
+        if (usuario == null) {
+            throw new UsernameNotFoundException("Usuario no encontrado" + username);
+        }
+        
         int userStatus = usuario.getStatus();
-
         boolean isDisable = (userStatus == 0);
         
         return User.withUsername(usuario.getUserName())

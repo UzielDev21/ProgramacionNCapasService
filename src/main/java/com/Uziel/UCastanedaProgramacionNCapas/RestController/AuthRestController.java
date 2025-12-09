@@ -59,6 +59,14 @@ public class AuthRestController {
             }
 
             UsuarioJPA usuario = iUsuarioRepositoryDAO.findByUserName(username);
+            
+            if (usuario == null) {
+                result.correct = false;
+                result.errorMessage = "Usuario no encontrado";
+                result.status = 401;
+                return ResponseEntity.status(result.status).body(result);
+            }
+            
             String rol = usuario.RolJPA.getNombreRol();
             int idUsuario = usuario.getIdUsuario();
 
