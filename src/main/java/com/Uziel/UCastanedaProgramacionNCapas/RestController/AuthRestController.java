@@ -70,13 +70,6 @@ public class AuthRestController {
             String rol = usuario.RolJPA.getNombreRol();
             int idUsuario = usuario.getIdUsuario();
 
-            if (usuario == null) {
-                result.correct = false;
-                result.errorMessage = "Usuario no encontrado";
-                result.status = 401;
-                return ResponseEntity.status(result.status).body(result);
-            }
-
             String jwt = jwtService.GenerateUserToken(username, idUsuario, rol);
             result.correct = true;
             result.status = 200;
