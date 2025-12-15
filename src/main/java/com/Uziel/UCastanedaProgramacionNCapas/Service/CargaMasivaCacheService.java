@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TokenCacheService {
+public class CargaMasivaCacheService {
     private final static Map<String, LocalDateTime> tokenFechaValidacion = new ConcurrentHashMap<>();
     private final static Map<String, String> tokenNombreArchivo = new ConcurrentHashMap<>();
     private final static Map<String, List<UsuarioJPA>> tokenUsuariosArchivo = new ConcurrentHashMap<>();

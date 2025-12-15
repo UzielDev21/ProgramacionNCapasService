@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,18 +21,18 @@ import java.util.List;
 @Entity
 @Table(name = "USUARIO")
 public class UsuarioJPA {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idusuario", nullable = false)
     private int IdUsuario;
-    
+
     @Column(name = "username")
     private String userName;
-    
+
     @Column(name = "nombre")
     private String Nombre;
-    
+
     @Column(name = "apellidopaterno")
     private String ApellidoPaterno;
 
@@ -58,28 +59,37 @@ public class UsuarioJPA {
 
     @Column(name = "curp")
     private String Curp;
-    
+
     @Column(name = "imagenfile")
     @Lob
     private String Imagen;
-    
-    @Column(name = "status")
+
+    @Column(name = "status", nullable = false)
     private int Status;
+
+    @Column(name = "isverified", nullable = false)
+    private int IsVerified;
 
     @ManyToOne
     @JoinColumn(name = "idrol")
     public RolJPA RolJPA;
-    
+
     @OneToMany(mappedBy = "UsuarioJPA", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference 
+    @JsonManagedReference
     public List<DireccionJPA> DireccionesJPA = new ArrayList<>();
-    
+
+    @PrePersist
+    private void prePersist() {
+        Status = 1;
+        IsVerified = 0;
+    }
+
 //------------------------------------------------------------------SETTERS Y GETTERS------------------------------------------------------------------//
     public UsuarioJPA() {
     }
 
     public UsuarioJPA(int IdUsuario, String userName, String Nombre, String ApellidoPaterno, String ApellidoMaterno, String Email,
-            String password, Date FechaNacimiento, String Sexo, String Telefono, String Celular, String Curp, String Imagen) {
+            String password, Date FechaNacimiento, String Sexo, String Telefono, String Celular, String Curp, String Imagen, int Status, int IsVerified) {
         this.IdUsuario = IdUsuario;
         this.userName = userName;
         this.Nombre = Nombre;
@@ -93,6 +103,8 @@ public class UsuarioJPA {
         this.Celular = Celular;
         this.Curp = Curp;
         this.Imagen = Imagen;
+        this.Status = Status;
+        this.IsVerified = IsVerified;
     }
 
     public void setIdUsuario(int IdUsuario) {
@@ -102,12 +114,12 @@ public class UsuarioJPA {
     public int getIdUsuario() {
         return IdUsuario;
     }
-    
-    public void setUserName(String userName){
+
+    public void setUserName(String userName) {
         this.userName = userName;
     }
-    
-    public String getUserName(){
+
+    public String getUserName() {
         return userName;
     }
 
@@ -190,25 +202,32 @@ public class UsuarioJPA {
     public String getCurp() {
         return Curp;
     }
-    
-    public void setImagen(String Imagen){
+
+    public void setImagen(String Imagen) {
         this.Imagen = Imagen;
     }
-    
-    public String getImagen(){
+
+    public String getImagen() {
         return Imagen;
     }
-
 
     public void setStatus(int Status) {
         this.Status = Status;
     }
-    
+
     public int getStatus() {
         return Status;
     }
+
+    public void setIsVerified(int IsVerified) {
+        this.IsVerified = IsVerified;
+    }
     
-    @JsonIgnore 
+    public int getIsVerified(){
+        return IsVerified;
+    }
+
+    @JsonIgnore
     public List<DireccionJPA> getDireccionesJPA() {
         return DireccionesJPA;
     }

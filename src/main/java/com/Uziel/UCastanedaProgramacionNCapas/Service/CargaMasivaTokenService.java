@@ -6,7 +6,7 @@ import java.security.NoSuchAlgorithmException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TokenService {
+public class CargaMasivaTokenService {
 
     public String generateSha256(String input) {
         try {

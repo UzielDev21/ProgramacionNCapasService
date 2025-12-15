@@ -4,10 +4,10 @@ import com.Uziel.UCastanedaProgramacionNCapas.DAO.UsuarioJPADAOImplementation;
 import com.Uziel.UCastanedaProgramacionNCapas.JPA.Result;
 import com.Uziel.UCastanedaProgramacionNCapas.JPA.RolJPA;
 import com.Uziel.UCastanedaProgramacionNCapas.JPA.UsuarioJPA;
-import com.Uziel.UCastanedaProgramacionNCapas.Service.CargaMasivaLogger;
+import com.Uziel.UCastanedaProgramacionNCapas.Service.CargaMasivaService;
 import com.Uziel.UCastanedaProgramacionNCapas.Service.JwtService;
-import com.Uziel.UCastanedaProgramacionNCapas.Service.TokenCacheService;
-import com.Uziel.UCastanedaProgramacionNCapas.Service.TokenService;
+import com.Uziel.UCastanedaProgramacionNCapas.Service.CargaMasivaCacheService;
+import com.Uziel.UCastanedaProgramacionNCapas.Service.CargaMasivaTokenService;
 import jakarta.persistence.EntityExistsException;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -47,13 +47,13 @@ public class UsuarioRestController {
     private UsuarioJPADAOImplementation usuarioJPADAOImplementation;
 
     @Autowired
-    private CargaMasivaLogger cargaMasivaLogger;
+    private CargaMasivaService cargaMasivaLogger;
 
     @Autowired
-    private TokenService tokenService;
+    private CargaMasivaTokenService tokenService;
 
     @Autowired
-    private TokenCacheService tokenCacheService;
+    private CargaMasivaCacheService tokenCacheService;
 
     @GetMapping
     public ResponseEntity GetAll() {

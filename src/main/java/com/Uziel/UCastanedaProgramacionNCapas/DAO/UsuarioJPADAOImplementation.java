@@ -5,10 +5,10 @@ import com.Uziel.UCastanedaProgramacionNCapas.JPA.ColoniaJPA;
 import com.Uziel.UCastanedaProgramacionNCapas.JPA.RolJPA;
 import com.Uziel.UCastanedaProgramacionNCapas.JPA.UsuarioJPA;
 import com.Uziel.UCastanedaProgramacionNCapas.JPA.Result;
-import com.Uziel.UCastanedaProgramacionNCapas.Service.CargaMasivaLogger;
+import com.Uziel.UCastanedaProgramacionNCapas.Service.CargaMasivaService;
 import com.Uziel.UCastanedaProgramacionNCapas.Service.JwtService;
-import com.Uziel.UCastanedaProgramacionNCapas.Service.TokenCacheService;
-import com.Uziel.UCastanedaProgramacionNCapas.Service.TokenService;
+import com.Uziel.UCastanedaProgramacionNCapas.Service.CargaMasivaCacheService;
+import com.Uziel.UCastanedaProgramacionNCapas.Service.CargaMasivaTokenService;
 import io.jsonwebtoken.Claims;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityManager;
@@ -39,13 +39,13 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
     private EntityManager entityManager;
 
     @Autowired
-    private TokenService tokenService;
+    private CargaMasivaTokenService tokenService;
 
     @Autowired
-    private CargaMasivaLogger cargaMasivaLogger;
+    private CargaMasivaService cargaMasivaLogger;
 
     @Autowired
-    private TokenCacheService tokenCacheService;
+    private CargaMasivaCacheService tokenCacheService;
 
     @Override
     public Result GetAllJPA() {
@@ -150,15 +150,13 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
 
         try {
             TypedQuery<UsuarioJPA> queryUsuario = entityManager.createQuery(
-                    "FROM UsuarioJPA usuarioJPA WHERE usuarioJPA.UserName = :username", UsuarioJPA.class).setParameter("username", usuarioJPA.getUserName());
+                    "FROM UsuarioJPA usuarioJPA WHERE usuarioJPA.userName = :username", UsuarioJPA.class).setParameter("username", usuarioJPA.getUserName());
 
             List<UsuarioJPA> usuarios = queryUsuario.getResultList();
 
             if (!usuarios.isEmpty()) {
                 throw new EntityExistsException("El UserName " + usuarioJPA.getUserName() + " ya existe en la base de datos");
             }
-
-            usuarioJPA.setStatus(1);
 
             if (usuarioJPA.DireccionesJPA != null && !usuarioJPA.DireccionesJPA.isEmpty()) {
 

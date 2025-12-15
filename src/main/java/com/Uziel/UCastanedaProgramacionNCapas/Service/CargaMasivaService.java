@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CargaMasivaLogger {
+public class CargaMasivaService {
     
     private static final String LOG_PATH = "src/main/resources/Log_CargaMasiva.txt";
     
