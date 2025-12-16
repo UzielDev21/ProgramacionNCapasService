@@ -8,6 +8,7 @@ import com.Uziel.UCastanedaProgramacionNCapas.Service.CargaMasivaService;
 import com.Uziel.UCastanedaProgramacionNCapas.Service.JwtService;
 import com.Uziel.UCastanedaProgramacionNCapas.Service.CargaMasivaCacheService;
 import com.Uziel.UCastanedaProgramacionNCapas.Service.CargaMasivaTokenService;
+import com.Uziel.UCastanedaProgramacionNCapas.Service.VerificationTokenService;
 import jakarta.persistence.EntityExistsException;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -24,8 +25,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -33,7 +34,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -54,6 +54,9 @@ public class UsuarioRestController {
 
     @Autowired
     private CargaMasivaCacheService tokenCacheService;
+
+    @Autowired
+    private VerificationTokenService verificationTokenService;
 
     @GetMapping
     public ResponseEntity GetAll() {
@@ -142,6 +145,29 @@ public class UsuarioRestController {
         }
 
         return ResponseEntity.status(result.status).body(result);
+    }
+
+    @GetMapping("/verify-account")
+    public ResponseEntity verifyAccount(@RequestParam("tokenEmail") String tokenEmail) {
+        Result result = new Result();
+
+        if (!verificationTokenService.isTokenValid(tokenEmail)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Token invalido");
+        }
+
+        Integer idUsuario = verificationTokenService.getUserIdFromToken(tokenEmail);
+        if (idUsuario == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El token no esta asociado al usuario");
+        }
+
+        result = usuarioJPADAOImplementation.VerifyUser(idUsuario);
+        if (!result.correct) {
+            return ResponseEntity.status(result.status).body(result.errorMessage);
+        }
+
+        verificationTokenService.markTokenAsUsed(tokenEmail);
+
+        return ResponseEntity.ok("Cuenta verificada correctamente. ya puedes inciar sesión");
     }
 
     @DeleteMapping("/{IdUsuario}")

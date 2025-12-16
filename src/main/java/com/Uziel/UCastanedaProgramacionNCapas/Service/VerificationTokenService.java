@@ -6,6 +6,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.stereotype.Service;
 
+//Generar token para comprobar el correo
 @Service
 public class VerificationTokenService {
 

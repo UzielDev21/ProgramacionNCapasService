@@ -47,6 +47,7 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
     @Autowired
     private CargaMasivaCacheService tokenCacheService;
 
+    //metodo para obtener a todos los usuarios
     @Override
     public Result GetAllJPA() {
         Result result = new Result();
@@ -66,6 +67,7 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
         return result;
     }
 
+    //MEtodo para obtener a un usuario en especifico
     @Override
     public Result GetByIdJPA(int IdUsuario) {
         Result result = new Result();
@@ -86,6 +88,7 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
         return result;
     }
 
+    //Metodo para actualizar datos de un usuario
     @Override
     @Transactional
     public Result UpdateJPA(UsuarioJPA usuario) {
@@ -123,6 +126,7 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
         return result;
     }
 
+    //Metodo para actualizar la imagen del usuario
     @Override
     @Transactional
     public Result UpdateImagenJPA(int IdUsuario, String imagenBase64) {
@@ -143,6 +147,7 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
         return result;
     }
 
+    //Metodo para agregar nuevo usuario
     @Override
     @Transactional
     public Result AddJPA(UsuarioJPA usuarioJPA) {
@@ -176,6 +181,39 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
         return result;
     }
 
+    //Metodo para Verificar el correo de un usuario
+    @Override
+    @Transactional
+    public Result VerifyUser(int idUsuario) {
+        Result result = new Result();
+
+        try {
+
+            UsuarioJPA usuario = entityManager.find(UsuarioJPA.class, idUsuario);
+
+            if (usuario == null) {
+                result.correct = false;
+                result.errorMessage = "Usuario no encontrado";
+                result.status = 404;
+                return result;
+            }
+
+            usuario.setIsVerified(1);
+            entityManager.merge(usuario);
+            result.correct = true;
+            result.status = 200;
+
+        } catch (Exception ex) {
+            result.correct = false;
+            result.errorMessage = ex.getLocalizedMessage();
+            result.ex = ex;
+            result.status = 500;
+        }
+
+        return result;
+    }
+
+    //Metodo para eliminar a un usuario
     @Override
     @Transactional
     public Result DeleteJPA(int IdUsuario) {
@@ -196,6 +234,7 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
         return result;
     }
 
+    //Metodo para realizar la Carga masiva
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result AddAllJPA(List<UsuarioJPA> usuariosJPA) {
@@ -214,6 +253,7 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
         return result;
     }
 
+    //metodo para validar los datos de la carga masiva
     @Override
     public Result ValidarCarga(String nombreArchivo, List<UsuarioJPA> usuariosArchivo) {
         Result result = new Result();
@@ -286,6 +326,7 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
         return result;
     }
 
+    //Metodo para procesar la carga masiva y guardar todos los datos
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Result ProcesarCargaMasiva(String token) {
@@ -354,6 +395,7 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
         return result;
     }
 
+    //Metodo para buscar a un usuario dependiendo del filtro
     @Override
     public Result BuscarUsuarioJPA(UsuarioJPA usuario) {
         Result result = new Result();
