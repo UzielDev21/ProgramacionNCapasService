@@ -3,6 +3,9 @@ package com.Uziel.UCastanedaProgramacionNCapas.DTO;
 import java.io.Serializable;
 
 public class VerificationEmailMessage implements Serializable{
+    
+    private static final long serialVersionUID = 1L;
+    
     private String email;
     private String nombre;
     private String token;

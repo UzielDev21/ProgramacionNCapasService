@@ -17,10 +17,19 @@ public class EmailService {
 
     public void sendVerificationEmail(String toEmail, String nombre, String tokenEmail) throws MessagingException {
         
-        String verificationLink = "http://localhost:8080/verify-account?token=" + tokenEmail;
+        String verificationLink = "http://localhost:8080/usuario/verify-account?tokenEmail=" + tokenEmail;
         
         String htmlContent = """
-                             hola, confirma tu correo
+                             <div style="font-family: Arial, Sans-serif; line-height: 1.5;">
+                                <h2> Hola %s </h2>
+                                <p> Su registro esta completo, para activar tu cuenta, por favor confirma tu correo.</p>
+                                <p>
+                                    <a href="%s"
+                                        style="display:inline-block; padding: 10px 16px; text-decoration:none; border-radius:6px; background:#1a73e8; color:white;">
+                                        Validar correo
+                                    </a>
+                                </p>
+                             </div>
                              """.formatted(nombre, verificationLink);
         
         MimeMessage message = mailSender.createMimeMessage();

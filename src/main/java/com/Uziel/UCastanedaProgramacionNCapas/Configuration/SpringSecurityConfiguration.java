@@ -49,15 +49,20 @@ public class SpringSecurityConfiguration {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                .requestMatchers(HttpMethod.GET, "/usuario/verify-account").permitAll()
+                        
                 .requestMatchers("/api/Login").permitAll()
                 .requestMatchers("/api/Logout").authenticated()
+                        
                 .requestMatchers(HttpMethod.GET, "/UsuarioIndex/Add").hasRole("Colaborador")
                 .requestMatchers(HttpMethod.POST, "/UsuarioIndex/Add").hasRole("Colaborador")
+                
                 .requestMatchers(HttpMethod.GET, "/UsuarioIndex/Details/Direccion/**").hasRole("Tercero")
                 .requestMatchers(HttpMethod.POST, "/UsuarioIndex/Details/Direccion/**").hasRole("Tercero")
                 .requestMatchers(HttpMethod.PUT, "/UsuarioIndex/Details/Direccion/**").hasRole("Tercero")
                 .requestMatchers(HttpMethod.PATCH, "/UsuarioIndex/Details/Direccion/**").hasRole("Tercero")
                 .requestMatchers(HttpMethod.DELETE, "/UsuarioIndex/Details/Direccion/**").hasRole("Tercero")
+                
                 .requestMatchers("/UsuarioIndex/**")
                 .hasAnyRole("Administrador", "Gerente", "Lider" )
                 .anyRequest().authenticated()

@@ -16,15 +16,19 @@ public class VerificationEmailConsumer {
 
     @JmsListener(destination = "queue.email.verification")
     public void receiveVerificationEmail(VerificationEmailMessage message){
-
+        
+        System.out.println("[JMS] mensaje recibido para: " + message.getEmail());
+        
         try {
             emailService.sendVerificationEmail(
                     message.getEmail(),
                     message.getNombre(),
                     message.getToken());
+            
+            System.out.println("[MAIL] correo enviado correamente a: " + message.getEmail());
 
         } catch (MessagingException ex) {
-            System.err.println("Error enviando correo de verificación" + ex.getMessage());
+            System.err.println("[MAIL ERROR] Error enviando correo a" + message.getEmail() + " -> " + ex.getMessage());
         }
     }
 }

@@ -8,6 +8,7 @@ import com.Uziel.UCastanedaProgramacionNCapas.Service.CargaMasivaService;
 import com.Uziel.UCastanedaProgramacionNCapas.Service.JwtService;
 import com.Uziel.UCastanedaProgramacionNCapas.Service.CargaMasivaCacheService;
 import com.Uziel.UCastanedaProgramacionNCapas.Service.CargaMasivaTokenService;
+import com.Uziel.UCastanedaProgramacionNCapas.Service.UsuarioService;
 import com.Uziel.UCastanedaProgramacionNCapas.Service.VerificationTokenService;
 import jakarta.persistence.EntityExistsException;
 import java.io.FileInputStream;
@@ -58,6 +59,9 @@ public class UsuarioRestController {
     @Autowired
     private VerificationTokenService verificationTokenService;
 
+    @Autowired
+    private UsuarioService usuarioService;
+    
     @GetMapping
     public ResponseEntity GetAll() {
         Result result = new Result();
@@ -123,14 +127,18 @@ public class UsuarioRestController {
         Result result = new Result();
 
         try {
-            result = usuarioJPADAOImplementation.AddJPA(usuarioJPA);
-
+            result = usuarioService.registrarUsuario(usuarioJPA);
+            
             if (result.status == 0) {
+                
                 if (result.correct) {
                     result.status = 201;
+                    
                 } else {
+                    
                     if (result.ex instanceof EntityExistsException) {
                         result.status = 409;
+                        
                     } else {
                         result.status = 500;
                     }
