@@ -3,6 +3,7 @@ package com.Uziel.UCastanedaProgramacionNCapas.Service;
 import com.Uziel.UCastanedaProgramacionNCapas.DAO.UsuarioJPADAOImplementation;
 import com.Uziel.UCastanedaProgramacionNCapas.JPA.Result;
 import com.Uziel.UCastanedaProgramacionNCapas.JPA.UsuarioJPA;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +29,7 @@ public class UsuarioService {
         Result result = new Result();
 
         try {
-
+            
             result = usuarioJPADAOImplementation.AddJPA(usuarioJPA);
 
             if (!result.correct) {

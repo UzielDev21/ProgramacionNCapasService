@@ -29,6 +29,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,6 +47,9 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
 
     @Autowired
     private CargaMasivaCacheService tokenCacheService;
+    
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     //metodo para obtener a todos los usuarios
     @Override
@@ -167,6 +171,10 @@ public class UsuarioJPADAOImplementation implements IUsuarioJPA {
 
                 usuarioJPA.DireccionesJPA.forEach(direccion -> direccion.UsuarioJPA = usuarioJPA);
             }
+            
+            String passwordPlano = usuarioJPA.getPassword();
+            String passwordEncriptado = passwordEncoder.encode(passwordPlano);
+            usuarioJPA.setPassword(passwordEncriptado);
 
             entityManager.persist(usuarioJPA);
             result.correct = true;
