@@ -73,6 +73,10 @@ public class UsuarioJPA {
     @ManyToOne
     @JoinColumn(name = "idrol")
     public RolJPA RolJPA;
+    
+    @OneToMany(mappedBy = "UsuarioJPA", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    public List<PasswordTokenJPA> tokens = new ArrayList<>();
 
     @OneToMany(mappedBy = "UsuarioJPA", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
