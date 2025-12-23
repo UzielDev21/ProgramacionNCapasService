@@ -7,6 +7,8 @@ import com.Uziel.UCastanedaProgramacionNCapas.Service.JwtService;
 import com.Uziel.UCastanedaProgramacionNCapas.Service.TokenListaNegraService;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Map;
+import java.util.UUID;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,7 +16,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("api")
@@ -59,14 +63,14 @@ public class AuthRestController {
             }
 
             UsuarioJPA usuario = iUsuarioRepositoryDAO.findByUserName(username);
-            
+
             if (usuario == null) {
                 result.correct = false;
                 result.errorMessage = "Usuario no encontrado";
                 result.status = 401;
                 return ResponseEntity.status(result.status).body(result);
             }
-            
+
             String rol = usuario.RolJPA.getNombreRol();
             int idUsuario = usuario.getIdUsuario();
 
@@ -102,7 +106,7 @@ public class AuthRestController {
 
             String token = authHeader.substring(7);
             String jti = jwtService.getAllClaims(token).getId();
-            
+
             tokenListaNegraService.invalidateToken(jti);
             SecurityContextHolder.clearContext();
 
@@ -118,6 +122,22 @@ public class AuthRestController {
         }
 
         return ResponseEntity.status(result.status).body(result);
+    }
+
+    @PostMapping("/ResetPassword")
+    public ResponseEntity resetPassword(HttpServletRequest request,
+            @RequestParam("email") String email) {
+        
+        UsuarioJPA usuarioJPA = iUsuarioRepositoryDAO.findByEmail(email);
+        
+        if (usuarioJPA == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El usuario no existe");
+        }
+        
+        String token = UUID.randomUUID().toString();
+//        iUsuarioRepositoryDAO.
+        return null;
+        
     }
 
 }

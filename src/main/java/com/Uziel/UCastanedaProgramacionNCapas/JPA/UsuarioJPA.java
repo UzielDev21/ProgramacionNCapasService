@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class UsuarioJPA {
     private String ApellidoMaterno;
 
     @Column(name = "email")
-    private String Email;
+    private String email;
 
     @Column(name = "password")
     private String password;
@@ -74,9 +75,9 @@ public class UsuarioJPA {
     @JoinColumn(name = "idrol")
     public RolJPA RolJPA;
     
-    @OneToMany(mappedBy = "UsuarioJPA", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "usuarioJPA", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    public List<PasswordTokenJPA> tokens = new ArrayList<>();
+    public PasswordTokenJPA token;
 
     @OneToMany(mappedBy = "UsuarioJPA", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
@@ -92,14 +93,14 @@ public class UsuarioJPA {
     public UsuarioJPA() {
     }
 
-    public UsuarioJPA(int IdUsuario, String userName, String Nombre, String ApellidoPaterno, String ApellidoMaterno, String Email,
+    public UsuarioJPA(int IdUsuario, String userName, String Nombre, String ApellidoPaterno, String ApellidoMaterno, String email,
             String password, Date FechaNacimiento, String Sexo, String Telefono, String Celular, String Curp, String Imagen, int Status, int IsVerified) {
         this.IdUsuario = IdUsuario;
         this.userName = userName;
         this.Nombre = Nombre;
         this.ApellidoPaterno = ApellidoPaterno;
         this.ApellidoMaterno = ApellidoMaterno;
-        this.Email = Email;
+        this.email = email;
         this.password = password;
         this.FechaNacimiento = FechaNacimiento;
         this.Sexo = Sexo;
@@ -152,11 +153,11 @@ public class UsuarioJPA {
     }
 
     public void setEmail(String Email) {
-        this.Email = Email;
+        this.email = Email;
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     public void setPassword(String password) {

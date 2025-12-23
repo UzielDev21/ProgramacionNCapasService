@@ -8,6 +8,6 @@ public interface IUsuarioRepositoryDAO extends JpaRepository<UsuarioJPA, Integer
 
     UsuarioJPA findByUserName(String userName);
     
-    Optional<UsuarioJPA> findByEmail(String Emai);
+    UsuarioJPA findByEmail(String Email);
     
 }

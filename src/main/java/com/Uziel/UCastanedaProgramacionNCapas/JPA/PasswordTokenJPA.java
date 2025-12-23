@@ -1,7 +1,6 @@
 package com.Uziel.UCastanedaProgramacionNCapas.JPA;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,14 +9,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import java.util.Date;
 
 @Entity
 @Table(name = "PASSWORDTOKEN")
 public class PasswordTokenJPA {
+
+    private static final int EXPIRATION = 10;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,27 +27,21 @@ public class PasswordTokenJPA {
     @Column(name = "token", unique = true, nullable = false)
     private String token;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idusuario", nullable = false)
     @JsonBackReference
     public UsuarioJPA usuarioJPA;
 
-    @Column(name = "expiration", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date expiration;
+    @Column(name = "expirydate")
+    private Date expiryDate;
 
-    @Column(name = "isused")
-    private int isUsed;
-
-    
 //------------------------------------------------------------------SETTERS Y GETTERS------------------------------------------------------------------//
     public PasswordTokenJPA() {
     }
 
-    public PasswordTokenJPA(String token, Date expiration, int isUsed) {
+    public PasswordTokenJPA(String token, Date expiryDate) {
         this.token = token;
-        this.expiration = expiration;
-        this.isUsed = isUsed;
+        this.expiryDate = expiryDate;
     }
 
     public int getIdToken() {
@@ -74,20 +68,12 @@ public class PasswordTokenJPA {
         this.usuarioJPA = usuarioJPA;
     }
 
-    public Date getExpiration() {
-        return expiration;
+    public Date getExpiryDate() {
+        return expiryDate;
     }
 
-    public void setExpiration(Date expiration) {
-        this.expiration = expiration;
-    }
-
-    public int getIsUsed() {
-        return isUsed;
-    }
-
-    public void setIsUsed(int isUsed) {
-        this.isUsed = isUsed;
+    public void setExpiryDate(Date expiryDate) {
+        this.expiryDate = expiryDate;
     }
 
 }
