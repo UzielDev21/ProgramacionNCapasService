@@ -136,8 +136,9 @@ public class AuthRestController {
         
         String token = UUID.randomUUID().toString();
 //        iUsuarioRepositoryDAO.
-        return null;
         
+
+        return null;
     }
 
 }

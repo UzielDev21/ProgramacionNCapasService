@@ -2,6 +2,7 @@ package com.Uziel.UCastanedaProgramacionNCapas.Service;
 
 import com.Uziel.UCastanedaProgramacionNCapas.DAO.IUsuarioRepositoryDAO;
 import com.Uziel.UCastanedaProgramacionNCapas.DAO.UsuarioJPADAOImplementation;
+import com.Uziel.UCastanedaProgramacionNCapas.JPA.PasswordTokenJPA;
 import com.Uziel.UCastanedaProgramacionNCapas.JPA.Result;
 import com.Uziel.UCastanedaProgramacionNCapas.JPA.UsuarioJPA;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -56,22 +57,6 @@ public class UsuarioService {
             result.ex = ex;
         }
 
-        return result;
-    }
-
-    
-    public Result PasswordResetTokenForUser(UsuarioJPA usuarioJPA, String token){
-        
-        Result result = new Result();
-        
-        try {
-            
-        } catch (Exception ex) {
-            result.correct = false;
-            result.errorMessage = ex.getLocalizedMessage();
-            result.ex = ex;
-        }
-        
         return result;
     }
 }

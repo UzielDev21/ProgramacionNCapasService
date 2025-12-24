@@ -51,6 +51,9 @@ public class SpringSecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.GET, "/usuario/verify-account").permitAll()
                         
+                .requestMatchers(HttpMethod.POST, "/usuario/reset-password").permitAll()
+                .requestMatchers(HttpMethod.GET, "/usuario/reset-password").permitAll()
+                        
                 .requestMatchers("/api/Login").permitAll()
                 .requestMatchers("/api/Logout").authenticated()
                         
