@@ -13,7 +13,11 @@ public class EmbeddedArtemisConfiguration {
     @Bean
     public Queue verificationEmailQueue(){
         return new ActiveMQQueue("queue.email.verification");
-        
+    }
+    
+    @Bean
+    public Queue passwordEmailQueue(){
+        return new ActiveMQQueue("queue.email.passwordreset");
     }
     
 }

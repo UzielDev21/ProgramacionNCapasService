@@ -62,6 +62,7 @@ public class UsuarioRestController {
     @Autowired
     private UsuarioService usuarioService;
     
+    //CARGAR TODOS LOS USUARIOS PARA EL INDEZ
     @GetMapping
     public ResponseEntity GetAll() {
         Result result = new Result();
@@ -79,7 +80,8 @@ public class UsuarioRestController {
 
         return ResponseEntity.status(result.status).body(result);
     }
-
+    
+    //CARGAR LOS DATOS DE UN USUARIO EN ESPECIFICO
     @GetMapping("/{IdUsuario}")
     public ResponseEntity GetById(@PathVariable("IdUsuario") int IdUsuario) {
         Result result = new Result();
@@ -104,6 +106,7 @@ public class UsuarioRestController {
         return ResponseEntity.status(result.status).body(result);
     }
 
+    //FILTRO PARA BUSCAR A UN USUARIO
     @PostMapping("/buscar")
     public ResponseEntity GetAllDinamico(@RequestBody UsuarioJPA usuario) {
         Result result = new Result();
@@ -122,6 +125,7 @@ public class UsuarioRestController {
         return ResponseEntity.status(result.status).body(result);
     }
 
+    //AGREGAR UN USUARIO NUEVO
     @PostMapping
     public ResponseEntity AddUsuario(@RequestBody UsuarioJPA usuarioJPA) {
         Result result = new Result();
@@ -153,8 +157,9 @@ public class UsuarioRestController {
         }
 
         return ResponseEntity.status(result.status).body(result);
-    }
-
+    } 
+   
+    //VERIFICAR LA CUENTA DEL USUARIO
     @GetMapping("/verify-account")
     public ResponseEntity verifyAccount(@RequestParam("tokenEmail") String tokenEmail) {
         Result result = new Result();
@@ -178,6 +183,7 @@ public class UsuarioRestController {
         return ResponseEntity.ok("Cuenta verificada correctamente. ya puedes inciar sesión");
     }
 
+    //ELIMINAR UN USUAIO CON SUS DIRECCIONES
     @DeleteMapping("/{IdUsuario}")
     public ResponseEntity DeleteUsuario(@PathVariable("IdUsuario") int IdUSuario) {
         Result result = new Result();
@@ -202,6 +208,7 @@ public class UsuarioRestController {
         return ResponseEntity.status(result.status).body(result);
     }
 
+    //ACTUALIZAR LA IMAGEN DEL USUARIO
     @PatchMapping("/imagen/{IdUsuario}")
     public ResponseEntity UpdateImagen(@PathVariable("IdUsuario") int IdUsuario, @RequestBody UsuarioJPA usuario) {
         Result result = new Result();
@@ -227,6 +234,7 @@ public class UsuarioRestController {
         return ResponseEntity.status(result.status).body(result);
     }
 
+    //ACTUALIZAR LOS DATOS DE UN USUARIO
     @PutMapping
     public ResponseEntity Update(@RequestBody UsuarioJPA usuarioJPA) {
         Result result = new Result();

@@ -3,6 +3,8 @@ package com.Uziel.UCastanedaProgramacionNCapas.DTO;
 import java.io.Serializable;
 
 public class PasswordResetEmailMessage implements Serializable{
+    
+    private static final Long serialVersionUID = 1L;
 
     private String email;
     private String nombre;

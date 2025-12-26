@@ -123,22 +123,4 @@ public class AuthRestController {
 
         return ResponseEntity.status(result.status).body(result);
     }
-
-    @PostMapping("/ResetPassword")
-    public ResponseEntity resetPassword(HttpServletRequest request,
-            @RequestParam("email") String email) {
-        
-        UsuarioJPA usuarioJPA = iUsuarioRepositoryDAO.findByEmail(email);
-        
-        if (usuarioJPA == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El usuario no existe");
-        }
-        
-        String token = UUID.randomUUID().toString();
-//        iUsuarioRepositoryDAO.
-        
-
-        return null;
-    }
-
 }
